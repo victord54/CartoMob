@@ -1,0 +1,40 @@
+@startuml
+
+title Diagramme de classe pour DevMob
+
+package cartomob {
+  class Building {
+    - String id
+    - String name
+    ..Constructor..
+    + Building(String name)
+  }
+
+  class Room {
+    - String id
+    - String name
+    ..Constructor..
+    + Room(String name)
+    ..Getters..
+    + Door getDoor(String id)
+    + Door getDoor(Room roomId)
+  }
+
+  class RoomHolder {}
+
+  class Wall {}
+
+  class Door {
+    ..Constructor..
+    + Door(String idRoomSrc, String idRoomDst)
+  }
+}
+
+
+RoomHolder --"*" Room
+Room "1"--"4" Wall
+Building --"1" RoomHolder
+Room "2"--"*" Door
+Wall --"*" Rect
+
+@enduml

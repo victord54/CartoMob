@@ -1,0 +1,12 @@
+@startuml
+class fr.victord54.cartomob.activities.MainActivity {
+# void onCreate(Bundle)
+}
+class fr.victord54.cartomob.tools.Building {
+- String id
+- String name
+}
+
+
+androidx.appcompat.app.AppCompatActivity <|-- fr.victord54.cartomob.activities.MainActivity
+@enduml
