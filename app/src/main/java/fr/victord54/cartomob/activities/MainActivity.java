@@ -1,8 +1,10 @@
-package fr.victord54.cartomob;
+package fr.victord54.cartomob.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import fr.victord54.cartomob.R;
 
 public class MainActivity extends AppCompatActivity {
 
