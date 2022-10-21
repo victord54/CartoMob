@@ -10,4 +10,6 @@
     <string name="main_list_btn">Modifier les batiments</string>
     <string name="listBuilding_header_dialog">Liste des batiments</string>
     <string name="buildingList_item_btn">Choisir</string>
+    <string name="building_nbRooms_pt1">Il y a</string>
+    <string name="building_nbRooms_pt2">pièces dans ce batiment.</string>
 </resources>

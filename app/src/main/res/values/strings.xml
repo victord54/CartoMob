@@ -9,4 +9,6 @@
     <string name="main_list_btn">Modify buildings</string>
     <string name="listBuilding_header_dialog">List of buildings</string>
     <string name="buildingList_item_btn">Choose</string>
+    <string name="building_nbRooms_pt1">There are</string>
+    <string name="building_nbRooms_pt2">rooms in this building.</string>
 </resources>

@@ -24,7 +24,7 @@ public class Building implements Iterable<Room>, Serializable {
         roomsHolder = new RoomsHolder();
     }
 
-    public boolean isBuildingEmpty() {
+    public boolean isEmpty() {
         return roomsHolder.isEmpty();
     }
 
@@ -57,5 +57,9 @@ public class Building implements Iterable<Room>, Serializable {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public int getNbRooms() {
+        return roomsHolder.getNbRooms();
     }
 }

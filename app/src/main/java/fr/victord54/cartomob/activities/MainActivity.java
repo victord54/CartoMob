@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 cartoMob.setBuilding(new Building(input.getText().toString()));
                 Intent intent = new Intent(MainActivity.this, BuildingActivity.class);
                 intent.putExtra("cartoMob", cartoMob);
-                intent.putExtra("i", cartoMob.getBuildings().size()-1);
+                intent.putExtra("iBuilding", cartoMob.getBuildings().size()-1);
 
                 newBuildingLauncher.launch(intent);
             });
@@ -88,9 +88,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setView(list);
 
             // Set up the buttons
-            builder.setNegativeButton("Annuler", (dialog, which) -> {
-                dialog.cancel();
-            });
+            builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
             builder.show();
         });
     }

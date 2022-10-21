@@ -1,7 +1,10 @@
 package fr.victord54.cartomob.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,24 +15,43 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import fr.victord54.cartomob.R;
-import fr.victord54.cartomob.models.Building;
 import fr.victord54.cartomob.models.CartoMob;
 import fr.victord54.cartomob.models.Room;
 
 public class BuildingActivity extends AppCompatActivity {
-    private final static String LOG_TAG = Building.class.getSimpleName();
-    public final static int RESULT_CODE_BUILDING = 2;
+    private final static String LOG_TAG = BuildingActivity.class.getSimpleName();
+    public final static int RESULT_CODE_BUILDING = 0;
     private CartoMob cartoMob;
+    private TextView name;
+    private Button addRoom;
+    private Button showBuilding;
+    private int iBuilding;
+
+    final ActivityResultLauncher<Intent> newRoomLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RoomActivity.RESULT_CODE_ROOM) {
+            if (result.getData() != null) {
+                cartoMob = (CartoMob) result.getData().getSerializableExtra("cartoMob");
+                Log.d(LOG_TAG, "Données reçues");
+                Log.d(LOG_TAG, "cartoMob : " + cartoMob.toString());
+            }
+        } else {
+            Log.d(LOG_TAG, "Aucune donnée reçue");
+        }
+    });
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building);
-        TextView name = findViewById(R.id.building_name_text);
-        cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
-        name.setText(cartoMob.getBuilding(getIntent().getIntExtra("i", 0)).getName());
 
-        Button addRoom = findViewById(R.id.building_addRoom_btn);
-        Button showBuilding = findViewById(R.id.building_showBuilding_btn);
+        name = findViewById(R.id.building_name_text);
+        cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
+        iBuilding = getIntent().getIntExtra("iBuilding", 0);
+        name.setText(cartoMob.getBuilding(iBuilding).getName());
+
+        addRoom = findViewById(R.id.building_addRoom_btn);
+        showBuilding = findViewById(R.id.building_showBuilding_btn);
 
         addRoom.setOnClickListener(view -> {
             Intent intent = new Intent(BuildingActivity.this, RoomActivity.class);
@@ -45,12 +67,20 @@ public class BuildingActivity extends AppCompatActivity {
 
             // Set up the buttons
             builder.setPositiveButton("OK", (dialog, which) -> {
-                cartoMob.getBuilding(0).addRoom(new Room(input.getText().toString()));
+                cartoMob.getBuilding(iBuilding).addRoom(new Room(input.getText().toString()));
                 intent.putExtra("cartoMob", cartoMob);
-                startActivity(intent);
+                intent.putExtra("iBuilding", iBuilding);
+                intent.putExtra("iRoom", cartoMob.getBuilding(iBuilding).getNbRooms() - 1);
+                newRoomLauncher.launch(intent);
             });
             builder.show();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showBuilding.setEnabled(!cartoMob.getBuilding(iBuilding).isEmpty());
     }
 
     @Override
