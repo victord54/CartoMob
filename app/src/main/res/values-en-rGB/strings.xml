@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CartoMob</string>
+    <string name="main_new_btn">New building</string>
+    <string name="main_load_btn">Load a building</string>
+    <string name="building_add_btn">Add room</string>
+    <string name="building_show_btn">Show building</string>
+    <string name="addBuilding_header_dialog">Type a name for the building</string>
+    <string name="addRoom_header_dialog">Type a name for the room</string>
+    <string name="main_list_btn">Modify buildings</string>
 </resources>
