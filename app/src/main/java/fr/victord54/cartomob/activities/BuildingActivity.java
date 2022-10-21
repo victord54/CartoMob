@@ -26,7 +26,7 @@ public class BuildingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_building);
         TextView name = findViewById(R.id.building_name_text);
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
-        name.setText(cartoMob.getBuilding(0).getName());
+        name.setText(cartoMob.getBuilding(getIntent().getIntExtra("i", 0)).getName());
 
         Button addRoom = findViewById(R.id.building_addRoom_btn);
         Button showBuilding = findViewById(R.id.building_showBuilding_btn);

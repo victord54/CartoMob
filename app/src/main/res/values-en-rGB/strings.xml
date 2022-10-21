@@ -8,4 +8,6 @@
     <string name="addBuilding_header_dialog">Type a name for the building</string>
     <string name="addRoom_header_dialog">Type a name for the room</string>
     <string name="main_list_btn">Modify buildings</string>
+    <string name="listBuilding_header_dialog">List of buildings</string>
+    <string name="buildingList_item_btn">Choose</string>
 </resources>

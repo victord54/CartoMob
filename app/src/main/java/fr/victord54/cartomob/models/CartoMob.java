@@ -23,6 +23,10 @@ public class CartoMob implements Serializable {
         return buildings.get(i);
     }
 
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
+
     @NonNull
     @Override
     public String toString() {

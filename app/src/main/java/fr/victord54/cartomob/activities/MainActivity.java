@@ -3,6 +3,8 @@ package fr.victord54.cartomob.activities;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -11,11 +13,13 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.Building;
 import fr.victord54.cartomob.models.CartoMob;
+import fr.victord54.cartomob.views.BuildingAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
@@ -67,13 +71,27 @@ public class MainActivity extends AppCompatActivity {
                 cartoMob.setBuilding(new Building(input.getText().toString()));
                 Intent intent = new Intent(MainActivity.this, BuildingActivity.class);
                 intent.putExtra("cartoMob", cartoMob);
+                intent.putExtra("i", cartoMob.getBuildings().size()-1);
+
                 newBuildingLauncher.launch(intent);
             });
             builder.show();
         });
 
         listBuildings.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.listBuilding_header_dialog);
 
+            final RecyclerView list = new RecyclerView(this);
+            list.setAdapter(new BuildingAdapter(cartoMob));
+            list.setLayoutManager(new LinearLayoutManager(this));
+            builder.setView(list);
+
+            // Set up the buttons
+            builder.setNegativeButton("Annuler", (dialog, which) -> {
+                dialog.cancel();
+            });
+            builder.show();
         });
     }
 
