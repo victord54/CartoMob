@@ -2,15 +2,20 @@ package fr.victord54.cartomob.models;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class RoomsHolder implements Iterable<Room> {
+public class RoomsHolder implements Iterable<Room>, Serializable {
     private final ArrayList<Room> rooms;
 
     public RoomsHolder() {
         rooms = new ArrayList<>();
+    }
+
+    public boolean isEmpty() {
+        return rooms.isEmpty();
     }
 
     public int getNbRooms() {
