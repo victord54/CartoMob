@@ -3,6 +3,7 @@ package fr.victord54.cartomob.views;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,8 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingViewHolder> {
 
         View buildingView = inflater.inflate(R.layout.activity_building_list_item, parent, false);
 
-        return new BuildingViewHolder(buildingView);
+        BuildingViewHolder b = new BuildingViewHolder(buildingView);
+        return b;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingViewHolder> {
         button.setOnClickListener(view -> {
             Intent intent = new Intent(context, BuildingActivity.class);
             intent.putExtra("cartoMob", cartoMob);
-            intent.putExtra("i", position);
+            intent.putExtra("iBuilding", position);
             context.startActivity(intent);
         });
     }

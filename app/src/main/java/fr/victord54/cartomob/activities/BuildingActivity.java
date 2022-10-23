@@ -49,14 +49,14 @@ public class BuildingActivity extends AppCompatActivity {
         name = findViewById(R.id.building_name_text);
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iBuilding = getIntent().getIntExtra("iBuilding", 0);
+        Log.d(LOG_TAG, "iBuilding = " + iBuilding);
         name.setText(cartoMob.getBuilding(iBuilding).getName());
         addRoom = findViewById(R.id.building_addRoom_btn);
         showBuilding = findViewById(R.id.building_showBuilding_btn);
         list = findViewById(R.id.room_list);
+        list.setText(cartoMob.getBuilding(iBuilding).toString());
 
         addRoom.setOnClickListener(view -> {
-            Intent intent = new Intent(BuildingActivity.this, RoomActivity.class);
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.addRoom_header_dialog);
 
@@ -68,6 +68,7 @@ public class BuildingActivity extends AppCompatActivity {
 
             // Set up the buttons
             builder.setPositiveButton("OK", (dialog, which) -> {
+                Intent intent = new Intent(BuildingActivity.this, RoomActivity.class);
                 cartoMob.getBuilding(iBuilding).addRoom(new Room(input.getText().toString()));
                 intent.putExtra("cartoMob", cartoMob);
                 intent.putExtra("iBuilding", iBuilding);
@@ -82,7 +83,7 @@ public class BuildingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showBuilding.setEnabled(!cartoMob.getBuilding(iBuilding).isEmpty());
-        list.setText(cartoMob.getBuilding(iBuilding).toString());
+        //list.setText(cartoMob.getBuilding(iBuilding).toString());
     }
 
     @Override
