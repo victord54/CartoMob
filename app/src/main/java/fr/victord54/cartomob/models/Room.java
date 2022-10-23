@@ -35,4 +35,13 @@ public class Room implements Iterable<Room>, Serializable {
     public Iterator<Room> iterator() {
         return null;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Room {\n" +
+                "\tid= '" + id + "',\n" +
+                "\tname= '" + name + "'\n" +
+                "}";
+    }
 }

@@ -15,6 +15,8 @@ public class RoomActivity extends AppCompatActivity {
     private final static String LOG_TAG = RoomActivity.class.getSimpleName();
     public static final int RESULT_CODE_ROOM = 1;
     private CartoMob cartoMob;
+    int iBuilding;
+    int iRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +26,8 @@ public class RoomActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.roomActivity_name_of_room);
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
-        int iBuilding = getIntent().getIntExtra("iBuilding", 0);
-        int iRoom = getIntent().getIntExtra("iRoom", 0);
+        iBuilding = getIntent().getIntExtra("iBuilding", 0);
+        iRoom = getIntent().getIntExtra("iRoom", 0);
         name.setText(cartoMob.getBuilding(iBuilding).getRoom(iRoom).getName());
     }
 

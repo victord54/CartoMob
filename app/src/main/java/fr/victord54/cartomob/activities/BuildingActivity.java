@@ -23,6 +23,7 @@ public class BuildingActivity extends AppCompatActivity {
     public final static int RESULT_CODE_BUILDING = 0;
     private CartoMob cartoMob;
     private TextView name;
+    private TextView list;
     private Button addRoom;
     private Button showBuilding;
     private int iBuilding;
@@ -49,9 +50,9 @@ public class BuildingActivity extends AppCompatActivity {
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iBuilding = getIntent().getIntExtra("iBuilding", 0);
         name.setText(cartoMob.getBuilding(iBuilding).getName());
-
         addRoom = findViewById(R.id.building_addRoom_btn);
         showBuilding = findViewById(R.id.building_showBuilding_btn);
+        list = findViewById(R.id.room_list);
 
         addRoom.setOnClickListener(view -> {
             Intent intent = new Intent(BuildingActivity.this, RoomActivity.class);
@@ -81,6 +82,7 @@ public class BuildingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showBuilding.setEnabled(!cartoMob.getBuilding(iBuilding).isEmpty());
+        list.setText(cartoMob.getBuilding(iBuilding).toString());
     }
 
     @Override

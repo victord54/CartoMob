@@ -7,7 +7,6 @@
     <string name="building_show_btn">Voir le batiment</string>
     <string name="addBuilding_header_dialog">Saisir un nom pour le batiment</string>
     <string name="addRoom_header_dialog">Saisir un nom pour la pièce</string>
-    <string name="main_list_btn">Modifier les batiments</string>
     <string name="listBuilding_header_dialog">Liste des batiments</string>
     <string name="buildingList_item_btn">Choisir</string>
     <string name="building_nbRooms_pt1">Il y a</string>

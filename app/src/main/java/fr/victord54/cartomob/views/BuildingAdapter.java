@@ -1,5 +1,6 @@
 package fr.victord54.cartomob.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,7 @@ import fr.victord54.cartomob.models.Building;
 import fr.victord54.cartomob.models.CartoMob;
 
 public class BuildingAdapter extends RecyclerView.Adapter<BuildingViewHolder> {
-    private CartoMob cartoMob;
+    private final CartoMob cartoMob;
     private Context context;
 
     public BuildingAdapter(CartoMob l) {
@@ -35,8 +37,7 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingViewHolder> {
 
         View buildingView = inflater.inflate(R.layout.activity_building_list_item, parent, false);
 
-        BuildingViewHolder b = new BuildingViewHolder(buildingView);
-        return b;
+        return new BuildingViewHolder(buildingView);
     }
 
     @Override
@@ -53,7 +54,6 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingViewHolder> {
             intent.putExtra("i", position);
             context.startActivity(intent);
         });
-
     }
 
     @Override

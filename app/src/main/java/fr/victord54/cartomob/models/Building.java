@@ -40,7 +40,7 @@ public class Building implements Iterable<Room>, Serializable {
         return roomsHolder.getRoom(i);
     }
 
-    public void addRoom(Room...r) {
+    public void addRoom(Room... r) {
         roomsHolder.addRoom(r);
     }
 
@@ -53,10 +53,11 @@ public class Building implements Iterable<Room>, Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "Building{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return "Building {\n" +
+                "\tid= '" + id + "',\n" +
+                "\tname= '" + name + "'\n" +
+                "\t" + roomsHolder.toString() + "\n" +
+                "}";
     }
 
     public int getNbRooms() {

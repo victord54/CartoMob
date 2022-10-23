@@ -1,20 +1,20 @@
 package fr.victord54.cartomob.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.Building;
@@ -22,11 +22,12 @@ import fr.victord54.cartomob.models.CartoMob;
 import fr.victord54.cartomob.views.BuildingAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    private final static String LOG_TAG = MainActivity.class.getSimpleName();
+    public final static String LOG_TAG = MainActivity.class.getSimpleName();
     private CartoMob cartoMob;
 
     private Button newBuilding;
-    private TextView listBuildings;
+    private Button loadBuildings;
+    private TextView listAll;
 
     final ActivityResultLauncher<Intent> newBuildingLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == BuildingActivity.RESULT_CODE_BUILDING) {
@@ -40,22 +41,23 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-    final ActivityResultLauncher<Intent> loadBuildingLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-
-    });
+//    final ActivityResultLauncher<Intent> loadBuildingLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+//
+//    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         newBuilding = findViewById(R.id.main_new_btn);
-        listBuildings = findViewById(R.id.main_list_btn);
+        loadBuildings = findViewById(R.id.main_load_btn);
+        listAll = findViewById(R.id.main_list_of_all);
         if (cartoMob == null)
             cartoMob = new CartoMob();
 
         if (cartoMob.isEmpty()) {
             Log.i(LOG_TAG, "CartoMob est vide");
-            listBuildings.setEnabled(false);
+            loadBuildings.setEnabled(false);
         }
 
         newBuilding.setOnClickListener(view -> {
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         });
 
-        listBuildings.setOnClickListener(view -> {
+        loadBuildings.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.listBuilding_header_dialog);
 
@@ -98,7 +100,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (cartoMob == null)
             cartoMob = new CartoMob();
+        else {
+            listAll.setText(cartoMob.toString());
+        }
 
-        listBuildings.setEnabled(!cartoMob.isEmpty());
+        loadBuildings.setEnabled(!cartoMob.isEmpty());
     }
 }
