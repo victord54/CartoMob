@@ -14,7 +14,7 @@ public class Room implements Iterable<Room>, Serializable {
 
     public Room() {
         this.id = FactoryID.getInstance().getRoomID();
-        name = "Living room";
+        name = id;
     }
 
     public Room(String nom) {

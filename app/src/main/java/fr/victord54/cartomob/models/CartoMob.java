@@ -5,35 +5,49 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import fr.victord54.cartomob.tools.FactoryID;
+
 public class CartoMob implements Serializable {
-    private final ArrayList<Building> buildings;
+    private String id;
+    private String name;
+    private final ArrayList<Room> rooms;
+    private static final FactoryID factory = FactoryID.getInstance();
+
     public CartoMob() {
-        buildings = new ArrayList<>();
+        id = FactoryID.getInstance().getBuildingID();
+        rooms = new ArrayList<>();
     }
 
-    public void setBuilding(Building building) {
-        buildings.add(building);
+    public String getName() {
+        return name;
     }
 
     public boolean isEmpty() {
-        return buildings.isEmpty();
+        return rooms.isEmpty();
     }
 
-    public Building getBuilding(int i) {
-        return buildings.get(i);
+    public int getSize() {
+        return rooms.size();
     }
 
-    public ArrayList<Building> getBuildings() {
-        return buildings;
+    public Room getRoom(int i) {
+        return rooms.get(i);
     }
 
-    @NonNull
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addRoom(Room r) {
+        rooms.add(r);
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Building b: buildings) {
-            sb.append(b.toString()).append("\n");
-        }
-        return sb.toString();
+        return "CartoMob{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", rooms=" + rooms +
+                '}';
     }
 }

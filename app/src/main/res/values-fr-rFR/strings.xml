@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CartoMob</string>
-    <string name="main_new_btn">Nouveau batiment</string>
-    <string name="main_load_btn">Charger un batiment</string>
+    <string name="main_new_btn">Nouvelle pièce</string>
+    <string name="main_load_btn">Charger une pièce</string>
     <string name="building_add_btn">Ajouter une pièce</string>
     <string name="building_show_btn">Voir le batiment</string>
     <string name="addBuilding_header_dialog">Saisir un nom pour le batiment</string>
@@ -11,4 +11,7 @@
     <string name="buildingList_item_btn">Choisir</string>
     <string name="building_nbRooms_pt1">Il y a</string>
     <string name="building_nbRooms_pt2">pièces dans ce batiment.</string>
+    <string name="main_load_save">Charger une sauvegarde</string>
+    <string name="main_write_save">Sauvegarder</string>
+    <string name="custom_dialog_name_title">Saisir un nom pour la pièce</string>
 </resources>

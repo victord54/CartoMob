@@ -19,9 +19,9 @@ public class Save {
         return INSTANCE;
     }
 
-    public void saveToStorage(Context context, Object obj) {
+    public void saveToStorage(Context context, Object obj, String name) {
         try {
-            FileOutputStream fos = context.openFileOutput("cartoMob.data", Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(name + ".data", Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(obj);
             os.close();
@@ -32,9 +32,9 @@ public class Save {
         }
     }
 
-    public Object loadFromStorage(Context context) {
+    public Object loadFromStorage(Context context, String name) {
         try {
-            FileInputStream fis = context.openFileInput("cartoMob.data");
+            FileInputStream fis = context.openFileInput(name);
             ObjectInputStream is = new ObjectInputStream(fis);
             Object o = is.readObject();
             is.close();

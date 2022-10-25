@@ -13,22 +13,23 @@ import fr.victord54.cartomob.models.CartoMob;
 
 public class RoomActivity extends AppCompatActivity {
     private final static String LOG_TAG = RoomActivity.class.getSimpleName();
-    public static final int RESULT_CODE_ROOM = 1;
+    public static final int RESULT_CODE_ROOM = 123;
+
     private CartoMob cartoMob;
-    int iBuilding;
     int iRoom;
+    TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
-        TextView name = findViewById(R.id.roomActivity_name_of_room);
+        name = findViewById(R.id.roomActivity_name_of_room);
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
-        iBuilding = getIntent().getIntExtra("iBuilding", 0);
         iRoom = getIntent().getIntExtra("iRoom", 0);
-        name.setText(cartoMob.getBuilding(iBuilding).getRoom(iRoom).getName());
+
+        name.setText(cartoMob.getRoom(iRoom).getName());
     }
 
     @Override

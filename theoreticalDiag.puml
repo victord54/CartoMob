@@ -4,15 +4,11 @@ title Diagramme de classe pour DevMob
 
 package cartomob {
     package models {
-        class Building {
+        class CartoMob {
             - String id
             - String name
             ..Constructor..
-            + Building(String name)
-            ..Getters..
-            + String getId()
-            + String getName()
-            + String getRoom(int i)
+            + CartoMob(String name)
         }
 
         class Room {
@@ -21,26 +17,23 @@ package cartomob {
             ..Constructor..
             + Room(String name)
             ..Getters..
-            + Door getDoor(String id)
-            + Door getDoor(Room roomId)
         }
 
-        class RoomsHolder {}
-
-        class Wall {}
+        class Wall {
+            ..Constructor..
+            + Wall()
+        }
 
         class Door {
             ..Constructor..
-            + Door(String idRoomSrc, String idRoomDst)
+            + Door()
         }
     }
 }
 
-
-RoomsHolder --"*" Room
+CartoMob --"*" Room
 Room "1"--"4" Wall
-Building --"1" RoomsHolder
-Room "2"--"*" Door
-Wall --"*" Rect
+Wall --"*" Door
+Door --"*" Rect
 
 @enduml
