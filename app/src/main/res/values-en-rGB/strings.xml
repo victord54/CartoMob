@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CartoMob</string>
-    <string name="main_new_btn">New room</string>
-    <string name="main_load_btn">Load a room</string>
-    <string name="building_add_btn">Add room</string>
-    <string name="building_show_btn">Show building</string>
-    <string name="addBuilding_header_dialog">Type a name for the building</string>
-    <string name="addRoom_header_dialog">Type a name for the room</string>
-    <string name="listBuilding_header_dialog">List of buildings</string>
-    <string name="buildingList_item_btn">Choose</string>
-    <string name="building_nbRooms_pt1">There are</string>
-    <string name="building_nbRooms_pt2">rooms in this building.</string>
-    <string name="main_load_save">Load save</string>
-    <string name="main_write_save">Save</string>
+    <string name="main_new_room_btn">New room</string>
+    <string name="main_load_room_btn">Load a room</string>
+    <string name="main_load_save_btn">Load save</string>
+    <string name="main_write_save_btn">Save</string>
     <string name="custom_dialog_name_title">Type a name for the room</string>
     <string name="custom_dialog_save_chooser_title">Choose a file to load</string>
+    <string name="main_name_of_building_btn">Give a name to the building</string>
 </resources>

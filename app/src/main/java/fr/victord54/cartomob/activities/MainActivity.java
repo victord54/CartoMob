@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loadRoom;
     private Button loadFile;
     private Button writeFile;
+    private Button nameBuildingBtn;
 
     final ActivityResultLauncher<Intent> newRoomLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RoomActivity.RESULT_CODE_ROOM) {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         nameBuilding = findViewById(R.id.name_of_building);
+        nameBuildingBtn = findViewById(R.id.name_of_building_btn);
         newRoom = findViewById(R.id.main_new_room_btn);
         loadRoom = findViewById(R.id.main_load_room_btn);
         loadFile = findViewById(R.id.main_load_save);
@@ -64,15 +66,18 @@ public class MainActivity extends AppCompatActivity {
             loadRoom.setEnabled(false);
         }
 
-        CustomDialogName.NameListener listenerCartoName = new CustomDialogName.NameListener() {
-            @Override
-            public void nameTyped(String name) {
-                cartoMob.setName(name);
-                nameBuilding.setText(cartoMob.getName());
-            }
-        };
-        final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName);
-        cartoName.show();
+        nameBuildingBtn.setOnClickListener(view -> {
+            CustomDialogName.NameListener listenerCartoName = new CustomDialogName.NameListener() {
+                @Override
+                public void nameTyped(String name) {
+                    cartoMob.setName(name);
+                    nameBuilding.setText(cartoMob.getName());
+                    Log.d("ModelContent", cartoMob.toString());
+                }
+            };
+            final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName);
+            cartoName.show();
+        });
 
         newRoom.setOnClickListener(view -> {
             CustomDialogName.NameListener listenerRoomName = new CustomDialogName.NameListener() {
@@ -99,18 +104,25 @@ public class MainActivity extends AppCompatActivity {
 //            cartoMob = /* Le résultat de la recyclerView */
             String path = getFilesDir().getPath();
             File directory = new File(path);
-            ArrayList<File> files = (ArrayList<File>) Arrays.asList(Objects.requireNonNull(directory.listFiles()));
-            for (File f: files) {
-                Log.d("Files", f.getName());
+            File[] files = directory.listFiles();
+            ArrayList<String> fileArrayList = new ArrayList<>();
+            if (files != null) {
+                for (File f: files) {
+                    Log.d("Files", f.getName());
+                    fileArrayList.add(f.getName());
+                }
             }
 
             CustomDialogSaveChooser.FileListener listenerFileName = new CustomDialogSaveChooser.FileListener() {
                 @Override
                 public void nameFileTyped(String name) {
-
+                    Log.d("FileChooser", "nom du fichier dans main : " + name);
+                    cartoMob = (CartoMob) Save.getInstance().loadFromStorage(MainActivity.this, name);
+                    Log.d("ModelContent", cartoMob.toString());
+                    onResume();
                 }
             };
-            final CustomDialogSaveChooser dialogSaveChooser = new CustomDialogSaveChooser(this, listenerFileName);
+            final CustomDialogSaveChooser dialogSaveChooser = new CustomDialogSaveChooser(this, listenerFileName, fileArrayList);
             dialogSaveChooser.show();
         });
     }
@@ -118,8 +130,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (cartoMob == null)
-            cartoMob = new CartoMob();
-        loadRoom.setEnabled(!cartoMob.isEmpty());
+//        if (cartoMob == null)
+//            cartoMob = new CartoMob();
+//        else {
+//            if (!cartoMob.getName().isEmpty())
+//                nameBuilding.setText(cartoMob.getName());
+//        }
+//        loadRoom.setEnabled(!cartoMob.isEmpty());
     }
 }
