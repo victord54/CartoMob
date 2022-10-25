@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="main_new_room_btn">Nouvelle pièce</string>
-    <string name="main_load_room_btn">Charger une pièce</string>
+    <string name="main_load_room_btn">Modifier une pièce</string>
     <string name="main_load_save_btn">Charger une sauvegarde</string>
     <string name="main_write_save_btn">Sauvegarder</string>
-    <string name="custom_dialog_name_title">Saisir un nom pour la pièce</string>
+    <string name="custom_dialog_name_title_room">Saisir un nom pour la pièce</string>
     <string name="custom_dialog_save_chooser_title">Choisir un fichier à charger</string>
     <string name="main_name_of_building_btn">Donner un nom au batiment</string>
+    <string name="main_visit_building_btn">Visiter le batiment</string>
+    <string name="main_number_of_rooms_zero">Il n\'y a pas de pièces dans ce batiment</string>
+    <string name="main_number_of_rooms">Il y a %1$d pièces dans ce batiment</string>
+    <string name="custom_dialog_name_warning">Attention ! Création impossible d\'une pièce sans nom !</string>
+    <string name="custom_dialog_name_title_building">Saisir un nom pour le batiment</string>
 </resources>

@@ -6,7 +6,8 @@
     <TextView
         android:id="@+id/save_chooser_recycler_view_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/save_chooser_recycler_view_radio_btn" />
 
     <RadioButton
         android:id="@+id/save_chooser_recycler_view_radio_btn"

@@ -3,6 +3,7 @@ package fr.victord54.cartomob.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private CartoMob cartoMob;
 
     private TextView nameBuilding;
+    private TextView nbRooms;
     private Button newRoom;
     private Button loadRoom;
     private Button loadFile;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             if (result.getData() != null) {
                 cartoMob = (CartoMob) result.getData().getSerializableExtra("cartoMob");
                 Log.d(LOG_TAG, "Données reçues !");
-                Log.d(LOG_TAG, "cartoMob : "+cartoMob.toString());
+                Log.d(LOG_TAG, cartoMob.toString());
             }
         } else {
             Log.d(LOG_TAG, "Aucune donnée reçue");
@@ -51,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nameBuilding = findViewById(R.id.name_of_building);
-        nameBuildingBtn = findViewById(R.id.name_of_building_btn);
+        nameBuilding = findViewById(R.id.main_name_of_building);
+        nameBuildingBtn = findViewById(R.id.main_name_of_building_btn);
+        nbRooms = findViewById(R.id.main_number_of_rooms);
         newRoom = findViewById(R.id.main_new_room_btn);
         loadRoom = findViewById(R.id.main_load_room_btn);
         loadFile = findViewById(R.id.main_load_save);
@@ -64,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         if (cartoMob.isEmpty()) {
             Log.i(LOG_TAG, "cartoMob est vide");
             loadRoom.setEnabled(false);
+            nbRooms.setText(R.string.main_number_of_rooms_zero);
+        } else {
+            loadRoom.setEnabled(true);
+            nbRooms.setText(getString(R.string.main_number_of_rooms, cartoMob.getSize()));
         }
 
         nameBuildingBtn.setOnClickListener(view -> {
@@ -73,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
                     cartoMob.setName(name);
                     nameBuilding.setText(cartoMob.getName());
                     Log.d("ModelContent", cartoMob.toString());
+                    nameBuildingBtn.setVisibility(View.INVISIBLE);
                 }
             };
-            final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName);
+            final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName, getText(R.string.custom_dialog_name_title_building).toString());
             cartoName.show();
         });
 
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     newRoomLauncher.launch(sendData);
                 }
             };
-            final CustomDialogName roomName = new CustomDialogName(this, listenerRoomName);
+            final CustomDialogName roomName = new CustomDialogName(this, listenerRoomName, getText(R.string.custom_dialog_name_title_room).toString());
             roomName.show();
         });
 
@@ -130,12 +136,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if (cartoMob == null)
-//            cartoMob = new CartoMob();
-//        else {
-//            if (!cartoMob.getName().isEmpty())
-//                nameBuilding.setText(cartoMob.getName());
-//        }
-//        loadRoom.setEnabled(!cartoMob.isEmpty());
+        if (cartoMob != null) {
+            if (cartoMob.getName() != null && !cartoMob.getName().isEmpty()) {
+                nameBuildingBtn.setVisibility(View.INVISIBLE);
+                nameBuilding.setText(cartoMob.getName());
+            } if (cartoMob.isEmpty()) {
+                Log.i(LOG_TAG, "cartoMob est vide");
+                loadRoom.setEnabled(false);
+                nbRooms.setText(R.string.main_number_of_rooms_zero);
+            } else {
+                loadRoom.setEnabled(true);
+                nbRooms.setText(getString(R.string.main_number_of_rooms, cartoMob.getSize()));
+            }
+        }
     }
 }

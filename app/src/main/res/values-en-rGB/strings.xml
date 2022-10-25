@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="main_new_room_btn">New room</string>
-    <string name="main_load_room_btn">Load a room</string>
+    <string name="main_load_room_btn">Modify a room</string>
     <string name="main_load_save_btn">Load save</string>
     <string name="main_write_save_btn">Save</string>
-    <string name="custom_dialog_name_title">Type a name for the room</string>
+    <string name="custom_dialog_name_title_room">Type a name for the room</string>
     <string name="custom_dialog_save_chooser_title">Choose a file to load</string>
     <string name="main_name_of_building_btn">Give a name to the building</string>
+    <string name="main_visit_building_btn">Visit the building</string>
+    <string name="main_number_of_rooms_zero">There is no rooms in this building</string>
+    <string name="main_number_of_rooms">There is %1$d rooms in this building</string>
+    <string name="custom_dialog_name_warning">Warning ! cannot create no named room !</string>
+    <string name="custom_dialog_name_title_building">Type a name for the building</string>
 </resources>

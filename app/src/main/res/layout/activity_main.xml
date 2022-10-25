@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/name_of_building"
+        android:id="@+id/main_name_of_building"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -54,12 +54,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/name_of_building_btn"
+        android:id="@+id/main_name_of_building_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/main_name_of_building_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_of_building" />
+        app:layout_constraintTop_toBottomOf="@+id/main_name_of_building" />
+
+    <TextView
+        android:id="@+id/main_number_of_rooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/main_new_room_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_name_of_building_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

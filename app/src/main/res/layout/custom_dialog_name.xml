@@ -10,8 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:labelFor="@+id/custom_dialog_name_edit"
-        android:text="@string/custom_dialog_name_title" />
+        android:labelFor="@+id/custom_dialog_name_edit"/>
 
     <EditText
         android:id="@+id/custom_dialog_name_edit"
