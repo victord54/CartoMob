@@ -20,6 +20,7 @@ import fr.victord54.cartomob.models.CartoMob;
 import fr.victord54.cartomob.models.Room;
 import fr.victord54.cartomob.tools.Save;
 import fr.victord54.cartomob.views.CustomDialogName;
+import fr.victord54.cartomob.views.CustomDialogRoomChooser;
 import fr.victord54.cartomob.views.CustomDialogSaveChooser;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,36 +73,39 @@ public class MainActivity extends AppCompatActivity {
         }
 
         nameBuildingBtn.setOnClickListener(view -> {
-            CustomDialogName.NameListener listenerCartoName = new CustomDialogName.NameListener() {
-                @Override
-                public void nameTyped(String name) {
-                    cartoMob.setName(name);
-                    nameBuilding.setText(cartoMob.getName());
-                    Log.d("ModelContent", cartoMob.toString());
-                    nameBuildingBtn.setVisibility(View.INVISIBLE);
-                }
+            CustomDialogName.NameListener listenerCartoName = name -> {
+                cartoMob.setName(name);
+                nameBuilding.setText(cartoMob.getName());
+                Log.d("ModelContent", cartoMob.toString());
+                nameBuildingBtn.setVisibility(View.INVISIBLE);
             };
             final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName, getText(R.string.custom_dialog_name_title_building).toString());
             cartoName.show();
         });
 
         newRoom.setOnClickListener(view -> {
-            CustomDialogName.NameListener listenerRoomName = new CustomDialogName.NameListener() {
-                @Override
-                public void nameTyped(String name) {
-                    cartoMob.addRoom(new Room(name));
-                    Intent sendData = new Intent(MainActivity.this, RoomActivity.class);
-                    sendData.putExtra("cartoMob", cartoMob);
-                    sendData.putExtra("i", cartoMob.getSize()-1);
-                    newRoomLauncher.launch(sendData);
-                }
+            CustomDialogName.NameListener listenerRoomName = name -> {
+                cartoMob.addRoom(new Room(name));
+                Intent sendData = new Intent(MainActivity.this, RoomActivity.class);
+                sendData.putExtra("cartoMob", cartoMob);
+                sendData.putExtra("iRoom", cartoMob.getSize()-1);
+                newRoomLauncher.launch(sendData);
             };
             final CustomDialogName roomName = new CustomDialogName(this, listenerRoomName, getText(R.string.custom_dialog_name_title_room).toString());
             roomName.show();
         });
 
         loadRoom.setOnClickListener(view -> {
-            Toast.makeText(this, "On devrait ouvrir une fenêtre avec la liste des pièces", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "On devrait ouvrir une fenêtre avec la liste des pièces", Toast.LENGTH_SHORT).show();
+            CustomDialogRoomChooser.RoomListener roomListener = name -> {
+                Log.d("RoomChooser", "nom de la room dans main : " + name);
+                Intent sendData = new Intent(MainActivity.this, RoomActivity.class);
+                sendData.putExtra("cartoMob", cartoMob);
+                sendData.putExtra("iRoom", cartoMob.getIndiceFromRoom(name));
+                newRoomLauncher.launch(sendData);
+            };
+            final CustomDialogRoomChooser dialogRoomChooser = new CustomDialogRoomChooser(this, roomListener, cartoMob.getRooms());
+            dialogRoomChooser.show();
         });
 
         writeFile.setOnClickListener(view -> Save.getInstance().saveToStorage(this, cartoMob, cartoMob.getName()));
@@ -119,14 +123,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            CustomDialogSaveChooser.FileListener listenerFileName = new CustomDialogSaveChooser.FileListener() {
-                @Override
-                public void nameFileTyped(String name) {
-                    Log.d("FileChooser", "nom du fichier dans main : " + name);
-                    cartoMob = (CartoMob) Save.getInstance().loadFromStorage(MainActivity.this, name);
-                    Log.d("ModelContent", cartoMob.toString());
-                    onResume();
-                }
+            CustomDialogSaveChooser.FileListener listenerFileName = name -> {
+                Log.d("FileChooser", "nom du fichier dans main : " + name);
+                cartoMob = (CartoMob) Save.getInstance().loadFromStorage(MainActivity.this, name);
+                Log.d("ModelContent", cartoMob.toString());
+                onResume();
             };
             final CustomDialogSaveChooser dialogSaveChooser = new CustomDialogSaveChooser(this, listenerFileName, fileArrayList);
             dialogSaveChooser.show();

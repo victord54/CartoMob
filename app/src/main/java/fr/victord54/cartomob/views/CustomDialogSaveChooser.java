@@ -11,13 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.SplittableRandom;
 
 import fr.victord54.cartomob.R;
 
 public class CustomDialogSaveChooser extends Dialog {
     public interface FileListener {
-        void nameFileTyped(String name);
+        void nameFileSelected(String name);
     }
 
     private final Context context;
@@ -43,20 +42,12 @@ public class CustomDialogSaveChooser extends Dialog {
         setContentView(R.layout.custom_dialog_save_chooser);
 
         recyclerView = findViewById(R.id.custom_dialog_save_chooser_recycler_view);
-        ok_btn = findViewById(R.id.custom_dialog_name_btn_ok);
+        ok_btn = findViewById(R.id.custom_dialog_save_chooser_btn_ok);
 
-        SaveChooserAdapter.ItemClickListener itemClickListener = new SaveChooserAdapter.ItemClickListener() {
-            @Override
-            public void onClick(String s) {
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-                nameOfFile = s;
-                Log.d("FileChooser", "nom fichier choisi : " + nameOfFile);
-            }
+        SaveChooserAdapter.ItemClickListener itemClickListener = s -> {
+            recyclerView.post(() -> adapter.notifyItemChanged(adapter.selectedPosition));
+            nameOfFile = s;
+            Log.d("FileChooser", "nom fichier choisi : " + nameOfFile);
         };
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new SaveChooserAdapter(files, itemClickListener);
@@ -65,7 +56,7 @@ public class CustomDialogSaveChooser extends Dialog {
         ok_btn.setOnClickListener(view -> {
             this.dismiss();
             if (nameOfFile != null && !nameOfFile.isEmpty()) {
-                fileListener.nameFileTyped(nameOfFile);
+                fileListener.nameFileSelected(nameOfFile);
             }
         });
     }
