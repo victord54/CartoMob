@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/roomActivity_compass"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
