@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         loadFile = findViewById(R.id.main_load_save);
         writeFile = findViewById(R.id.main_write_save);
 
-        if (cartoMob == null)
-            cartoMob = new CartoMob();
+        if (cartoMob == null) cartoMob = new CartoMob();
+        writeFile.setEnabled(false);
 
         if (cartoMob.isEmpty()) {
             Log.i(LOG_TAG, "cartoMob est vide");
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 nameBuilding.setText(cartoMob.getName());
                 Log.d("ModelContent", cartoMob.toString());
                 nameBuildingBtn.setVisibility(View.INVISIBLE);
+                writeFile.setEnabled(true);
             };
             final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName, getText(R.string.custom_dialog_name_title_building).toString());
             cartoName.show();
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 cartoMob.addRoom(new Room(name));
                 Intent sendData = new Intent(MainActivity.this, RoomActivity.class);
                 sendData.putExtra("cartoMob", cartoMob);
-                sendData.putExtra("iRoom", cartoMob.getSize()-1);
+                sendData.putExtra("iRoom", cartoMob.getSize() - 1);
                 newRoomLauncher.launch(sendData);
             };
             final CustomDialogName roomName = new CustomDialogName(this, listenerRoomName, getText(R.string.custom_dialog_name_title_room).toString());
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             File[] files = directory.listFiles();
             ArrayList<String> fileArrayList = new ArrayList<>();
             if (files != null) {
-                for (File f: files) {
+                for (File f : files) {
                     Log.d("Files", f.getName());
                     fileArrayList.add(f.getName());
                 }
@@ -139,15 +140,18 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (cartoMob != null) {
             if (cartoMob.getName() != null && !cartoMob.getName().isEmpty()) {
+                writeFile.setEnabled(true);
                 nameBuildingBtn.setVisibility(View.INVISIBLE);
                 nameBuilding.setText(cartoMob.getName());
-            } if (cartoMob.isEmpty()) {
-                Log.i(LOG_TAG, "cartoMob est vide");
-                loadRoom.setEnabled(false);
-                nbRooms.setText(R.string.main_number_of_rooms_zero);
             } else {
-                loadRoom.setEnabled(true);
-                nbRooms.setText(getString(R.string.main_number_of_rooms, cartoMob.getSize()));
+                if (cartoMob.isEmpty()) {
+                    Log.i(LOG_TAG, "cartoMob est vide");
+                    loadRoom.setEnabled(false);
+                    nbRooms.setText(R.string.main_number_of_rooms_zero);
+                } else {
+                    loadRoom.setEnabled(true);
+                    nbRooms.setText(getString(R.string.main_number_of_rooms, cartoMob.getSize()));
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import fr.victord54.cartomob.R;
@@ -16,8 +17,9 @@ public class RoomActivity extends AppCompatActivity {
     public static final int RESULT_CODE_ROOM = 123;
 
     private CartoMob cartoMob;
-    int iRoom;
-    TextView name;
+    private int iRoom;
+    private TextView name;
+    private ImageView compass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +27,13 @@ public class RoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room);
 
         name = findViewById(R.id.roomActivity_name_of_room);
+        compass = findViewById(R.id.roomActivity_compass);
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iRoom = getIntent().getIntExtra("iRoom", 0);
 
         name.setText(cartoMob.getRoom(iRoom).getName());
+
     }
 
     @Override

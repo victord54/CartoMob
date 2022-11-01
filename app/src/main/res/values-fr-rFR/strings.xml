@@ -12,4 +12,6 @@
     <string name="main_number_of_rooms">Il y a %1$d pièces dans ce batiment</string>
     <string name="custom_dialog_name_warning">Attention ! Création impossible d\'une pièce sans nom !</string>
     <string name="custom_dialog_name_title_building">Saisir un nom pour le batiment</string>
+    <string name="custom_dialog_room_chooser_title">Choisir une pièce à charger</string>
+    <string name="ok">OK</string>
 </resources>

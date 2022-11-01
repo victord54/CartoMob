@@ -1,5 +1,6 @@
 package fr.victord54.cartomob.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -44,8 +45,8 @@ public class CustomDialogSaveChooser extends Dialog {
         recyclerView = findViewById(R.id.custom_dialog_save_chooser_recycler_view);
         ok_btn = findViewById(R.id.custom_dialog_save_chooser_btn_ok);
 
-        SaveChooserAdapter.ItemClickListener itemClickListener = s -> {
-            recyclerView.post(() -> adapter.notifyItemChanged(adapter.selectedPosition));
+        @SuppressLint("NotifyDataSetChanged") SaveChooserAdapter.ItemClickListener itemClickListener = s -> {
+            recyclerView.post(() -> adapter.notifyDataSetChanged());
             nameOfFile = s;
             Log.d("FileChooser", "nom fichier choisi : " + nameOfFile);
         };

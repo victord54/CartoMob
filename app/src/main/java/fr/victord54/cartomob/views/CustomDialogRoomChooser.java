@@ -1,5 +1,6 @@
 package fr.victord54.cartomob.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -45,8 +46,8 @@ public class CustomDialogRoomChooser extends Dialog {
         recyclerView = findViewById(R.id.custom_dialog_room_chooser_recycler_view);
         ok_btn = findViewById(R.id.custom_dialog_room_chooser_btn_ok);
 
-        RoomChooserAdapter.ItemClickListener itemClickListener = s -> {
-            recyclerView.post(() -> adapter.notifyItemChanged(adapter.selectedPosition));
+        @SuppressLint("NotifyDataSetChanged") RoomChooserAdapter.ItemClickListener itemClickListener = s -> {
+            recyclerView.post(() -> adapter.notifyDataSetChanged());
             nameOfRoom = s;
             Log.d("RoomChooser", "nom fichier choisi : " + nameOfRoom);
         };
