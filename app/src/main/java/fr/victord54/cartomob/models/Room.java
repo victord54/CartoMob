@@ -3,6 +3,8 @@ package fr.victord54.cartomob.models;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import fr.victord54.cartomob.tools.FactoryID;
@@ -10,16 +12,12 @@ import fr.victord54.cartomob.tools.FactoryID;
 public class Room implements Iterable<Room>, Serializable {
     private final String id;
     private final String name;
-//    private SuccessorHolder successorHolder;
+    private final HashMap<String, Wall> walls;
 
-    public Room() {
-        this.id = FactoryID.getInstance().getRoomID();
-        name = id;
-    }
-
-    public Room(String nom) {
-        this.id = FactoryID.getInstance().getRoomID();
+    public Room(String nom, String id) {
+        this.id = id;
         name = nom;
+        walls = new HashMap<>(4);
     }
 
     public boolean isRoomEmpty() {
@@ -28,6 +26,14 @@ public class Room implements Iterable<Room>, Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void addWall(String k, Wall w) {
+        walls.put(k, w);
+    }
+
+    public Wall getWall(String key) {
+        return walls.get(key);
     }
 
     @NonNull

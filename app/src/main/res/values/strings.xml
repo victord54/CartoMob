@@ -14,4 +14,10 @@
     <string name="custom_dialog_name_title_building">Type a name for the building</string>
     <string name="custom_dialog_room_chooser_title">Choose a room to load</string>
     <string name="ok">OK</string>
+    <string name="roomActivity_add_photo">Add photo</string>
+    <string name="to_north">To the north</string>
+    <string name="to_west">To the west</string>
+    <string name="to_south">To the south</string>
+    <string name="to_east">To the east</string>
+    <string name="direction_unknown">Direction is unknown</string>
 </resources>

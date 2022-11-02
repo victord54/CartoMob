@@ -12,11 +12,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import fr.victord54.cartomob.R;
-import fr.victord54.cartomob.models.Building;
 import fr.victord54.cartomob.models.CartoMob;
 
 public class RoomActivity extends AppCompatActivity implements SensorEventListener {
@@ -25,8 +25,13 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
 
     private CartoMob cartoMob;
     private int iRoom;
+    private String nsew;
+
     private TextView name;
     private ImageView compass;
+    private TextView direction;
+    private Button addPhoto;
+
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magneticField;
@@ -43,6 +48,8 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
 
         name = findViewById(R.id.roomActivity_name_of_room);
         compass = findViewById(R.id.roomActivity_compass);
+        direction = findViewById(R.id.roomActivity_orientation);
+        addPhoto = findViewById(R.id.roomActivity_add_photo);
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iRoom = getIntent().getIntExtra("iRoom", 0);
@@ -52,6 +59,10 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        addPhoto.setOnClickListener(v -> {
+
+        });
     }
 
     @Override
@@ -98,7 +109,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
             azimuth = (float) Math.toDegrees(orientation[0]);
             azimuth = (azimuth + 360) % 360;
 
-//            Log.d("Azimuth", "azimuth : " + azimuth);
+            Log.d("Azimuth", "azimuth : " + azimuth);
 
             Animation animation = new RotateAnimation(-correctAzimuth, -azimuth, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             correctAzimuth = azimuth;
@@ -107,6 +118,27 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
             animation.setFillAfter(true);
 
             compass.startAnimation(animation);
+
+            if (correctAzimuth > 330.f || correctAzimuth < 30.f) {
+                direction.setText(fr.victord54.cartomob.R.string.to_north);
+                nsew = "N";
+                addPhoto.setEnabled(true);
+            } else if (correctAzimuth > 240.f && correctAzimuth < 300.f) {
+                direction.setText(fr.victord54.cartomob.R.string.to_west);
+                nsew = "W";
+                addPhoto.setEnabled(true);
+            } else if (correctAzimuth > 150.f && correctAzimuth < 210.f) {
+                direction.setText(fr.victord54.cartomob.R.string.to_south);
+                nsew = "S";
+                addPhoto.setEnabled(true);
+            } else if (correctAzimuth > 60.f && correctAzimuth < 120.f) {
+                direction.setText(fr.victord54.cartomob.R.string.to_east);
+                nsew = "E";
+                addPhoto.setEnabled(true);
+            } else {
+                direction.setText(fr.victord54.cartomob.R.string.direction_unknown);
+                addPhoto.setEnabled(false);
+            }
         }
     }
 

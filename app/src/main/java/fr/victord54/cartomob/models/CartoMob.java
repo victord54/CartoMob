@@ -9,13 +9,10 @@ import java.util.Arrays;
 import fr.victord54.cartomob.tools.FactoryID;
 
 public class CartoMob implements Serializable {
-    private final String id;
     private String name;
     private final ArrayList<Room> rooms;
-    private static final FactoryID factory = FactoryID.getInstance();
 
     public CartoMob() {
-        id = factory.getBuildingID();
         rooms = new ArrayList<>();
     }
 
@@ -39,10 +36,6 @@ public class CartoMob implements Serializable {
         return rooms;
     }
 
-    public static FactoryID getFactory() {
-        return factory;
-    }
-
     public int getIndiceFromRoom(String s) {
         for (int i = 0; i < rooms.size(); i++) {
             if (rooms.get(i).getName().equals(s))
@@ -63,7 +56,6 @@ public class CartoMob implements Serializable {
     @Override
     public String toString() {
         return "CartoMob{" +
-                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", rooms=" + rooms +
                 '}';
