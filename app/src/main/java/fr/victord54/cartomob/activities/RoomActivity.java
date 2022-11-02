@@ -1,14 +1,21 @@
 package fr.victord54.cartomob.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -18,6 +25,7 @@ import android.widget.TextView;
 
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
+import fr.victord54.cartomob.tools.Save;
 
 public class RoomActivity extends AppCompatActivity implements SensorEventListener {
     private final static String LOG_TAG = RoomActivity.class.getSimpleName();
@@ -41,6 +49,17 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     private float azimuth = 0f;
     private float correctAzimuth = 0f;
 
+    final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Bundle extras = null;
+        if (result.getData() != null) {
+            extras = result.getData().getExtras();
+        }
+        if (extras != null) {
+            Bitmap bmp = (Bitmap) extras.get("data");
+            Save.getInstance().saveToStorage(this, bmp, "img_" + cartoMob.getName() + "_" + cartoMob.getRoom(iRoom).getName() + "_" + nsew);
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +69,10 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         compass = findViewById(R.id.roomActivity_compass);
         direction = findViewById(R.id.roomActivity_orientation);
         addPhoto = findViewById(R.id.roomActivity_add_photo);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(RoomActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+        }
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iRoom = getIntent().getIntExtra("iRoom", 0);
@@ -61,7 +84,10 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         addPhoto.setOnClickListener(v -> {
-
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                launcher.launch(intent);
+            }
         });
     }
 
