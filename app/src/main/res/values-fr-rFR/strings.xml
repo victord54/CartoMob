@@ -14,4 +14,10 @@
     <string name="custom_dialog_name_title_building">Saisir un nom pour le batiment</string>
     <string name="custom_dialog_room_chooser_title">Choisir une pièce à charger</string>
     <string name="ok">OK</string>
+    <string name="roomActivity_add_photo">Ajouter une photo</string>
+    <string name="to_north">Vers le nord</string>
+    <string name="to_west">Vers l\'ouest</string>
+    <string name="to_south">Vers le sud</string>
+    <string name="to_east">Vers l\'est</string>
+    <string name="direction_unknown">La direction est inconnue</string>
 </resources>
