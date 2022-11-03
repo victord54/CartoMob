@@ -33,8 +33,16 @@ public class Room implements Iterable<Wall>, Serializable {
         return walls.get(key);
     }
 
+    public HashMap<String, Wall> getWalls() {
+        return walls;
+    }
+
     public boolean isWallExist(String k) {
         return walls.containsKey(k);
+    }
+
+    public int getNbWalls() {
+        return walls.size();
     }
 
     public void setName(String s) {

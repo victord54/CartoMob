@@ -25,7 +25,6 @@ import androidx.core.app.ActivityCompat;
 
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
-import fr.victord54.cartomob.models.Room;
 import fr.victord54.cartomob.models.Wall;
 import fr.victord54.cartomob.tools.Save;
 
@@ -34,7 +33,6 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     public static final int RESULT_CODE_ROOM = 123;
 
     private CartoMob cartoMob;
-    private Room room;
     private int iRoom;
     private String nsew;
 
@@ -72,12 +70,13 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         }
         if (extras != null) {
             Bitmap bmp = (Bitmap) extras.get("data");
-            Save.getInstance().saveBmpToStorage(this, bmp, "img_" + cartoMob.getName() + "_" + room.getName() + "_" + nsew);
-            room.addWall(nsew, new Wall(nsew, "img_" + cartoMob.getName() + "_" + room.getName() + "_" + nsew));
-            Intent sendData = new Intent(this, WallActivity.class);
+            Save.getInstance().saveBmpToStorage(this, bmp, "img_" + cartoMob.getName() + "_" + cartoMob.getRoom(iRoom).getName() + "_" + nsew);
+            cartoMob.getRoom(iRoom).addWall(nsew, new Wall(nsew, "img_" + cartoMob.getName() + "_" + cartoMob.getRoom(iRoom).getName() + "_" + nsew));
+            Intent sendData = new Intent(RoomActivity.this, WallActivity.class);
             sendData.putExtra("cartoMob", cartoMob);
             sendData.putExtra("iRoom", iRoom);
             sendData.putExtra("orientation", nsew);
+            Log.d("ModelContentBUG", "orientation = " + nsew + " | wall(s) = " + cartoMob.getRoom(iRoom).getWalls());
             wallLauncher.launch(sendData);
         }
     });
@@ -99,9 +98,8 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iRoom = getIntent().getIntExtra("iRoom", 0);
-        room = cartoMob.getRoom(iRoom);
 
-        name.setText(room.getName());
+        name.setText(cartoMob.getRoom(iRoom).getName());
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -198,7 +196,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void verifyPhoto() {
-        if (room.isWallExist(nsew))
+        if (cartoMob.getRoom(iRoom).isWallExist(nsew))
             infoPhoto.setText(R.string.roomActivity_photo_already_added);
         else
             infoPhoto.setText("");

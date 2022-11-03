@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loadFile;
     private Button writeFile;
     private Button nameBuildingBtn;
+    private Button visit;
 
     final ActivityResultLauncher<Intent> newRoomLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RoomActivity.RESULT_CODE_ROOM) {
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         loadRoom = findViewById(R.id.main_load_room_btn);
         loadFile = findViewById(R.id.main_load_save);
         writeFile = findViewById(R.id.main_write_save);
+        visit = findViewById(R.id.main_visit_building);
 
         if (cartoMob == null) cartoMob = new CartoMob();
         writeFile.setEnabled(false);
@@ -136,6 +138,13 @@ public class MainActivity extends AppCompatActivity {
             };
             final CustomDialogSaveChooser dialogSaveChooser = new CustomDialogSaveChooser(this, listenerFileName, fileArrayList);
             dialogSaveChooser.show();
+        });
+
+        visit.setOnClickListener(v -> {
+            // TODO Créer une activité pour afficher la première pièce créée.
+            //  L'activité aura 2 boutons (<-- et -->) pour changer l'orientation (NSEW).
+            //  Les rectangles symbolisant les portes seront visibles et seront cliquables pour charger la pièce suivante.
+            Toast.makeText(this, "Charge la pièce à visiter", Toast.LENGTH_SHORT).show();
         });
     }
 

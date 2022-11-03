@@ -3,7 +3,6 @@ package fr.victord54.cartomob.views;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -40,6 +39,7 @@ public class RoomChooserAdapter extends RecyclerView.Adapter<RoomChooserAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.roomName.setText(rooms.get(position).getName());
+        holder.nbPhotos.setText(String.valueOf(rooms.get(position).getNbWalls()));
 
         holder.radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -70,11 +70,13 @@ public class RoomChooserAdapter extends RecyclerView.Adapter<RoomChooserAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final RadioButton radioButton;
         private final TextView roomName;
+        private final TextView nbPhotos;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             radioButton = itemView.findViewById(R.id.room_chooser_recycler_view_radio_btn);
             roomName = itemView.findViewById(R.id.room_chooser_recycler_view_name);
+            nbPhotos = itemView.findViewById(R.id.room_chooser_recylcer_view_nb_photos);
         }
     }
 }

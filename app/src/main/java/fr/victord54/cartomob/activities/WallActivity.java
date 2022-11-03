@@ -26,7 +26,6 @@ import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
 import fr.victord54.cartomob.models.Door;
 import fr.victord54.cartomob.models.Room;
-import fr.victord54.cartomob.models.Wall;
 import fr.victord54.cartomob.tools.Save;
 import fr.victord54.cartomob.views.CustomDialogName;
 import fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor;
@@ -35,8 +34,8 @@ public class WallActivity extends AppCompatActivity {
     private static final String LOG_TAG = WallActivity.class.getSimpleName();
     public static final int RESULT_CODE_WALL = 456;
     private CartoMob cartoMob;
-    private Room room;
-    private Wall wall;
+    private int iRoom;
+    private String key;
 
     private TextView name;
     private TextView orientation;
@@ -70,20 +69,20 @@ public class WallActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wall);
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
-        int iRoom = getIntent().getIntExtra("iRoom", 0);
-        String key = getIntent().getStringExtra("orientation");
-        room = cartoMob.getRoom(iRoom);
-        wall = room.getWall(key);
+        iRoom = getIntent().getIntExtra("iRoom", 0);
+        key = getIntent().getStringExtra("orientation");
+        Log.d("DebugWall", "key = " + key);
+        Log.d("DebugWall", "room = " + cartoMob.getRoom(iRoom).getName());
 
         name = findViewById(R.id.wallActivity_name);
         orientation = findViewById(R.id.wallActivity_orientation);
         photo = findViewById(R.id.wallActivity_photo);
         surfaceView = findViewById(R.id.wallActivity_surfaceView);
 
-        name.setText(room.getName());
+        name.setText(cartoMob.getRoom(iRoom).getName());
 
-        orientation.setText(wall.getOrientation());
-        Bitmap bitmap = Save.getInstance().loadBmpFromStorage(this, wall.getNameOfPhoto() + ".photo");
+        orientation.setText(cartoMob.getRoom(iRoom).getWall(key).getOrientation());
+        Bitmap bitmap = Save.getInstance().loadBmpFromStorage(this, cartoMob.getRoom(iRoom).getWall(key).getNameOfPhoto() + ".photo");
         photo.setImageBitmap(bitmap);
 
         surfaceView.setZOrderOnTop(true);
@@ -124,7 +123,7 @@ public class WallActivity extends AppCompatActivity {
 
                 canvas = surfaceHolder.lockCanvas();
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                for (Door d: wall.getDoors()) {
+                for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
                     canvas.drawRect(d.getRectangle(), setPaint());
                 }
                 canvas.drawRect(rect, setPaint());
@@ -135,8 +134,8 @@ public class WallActivity extends AppCompatActivity {
                 surfaceHolder.unlockCanvasAndPost(canvas);
 
                 if (rect != null) {
-                    wall.addDoor(new Door(rect, room));
-                    CustomDialogRoomChooserForDoor.RoomListener roomListener = name -> wall.getDoor(wall.nbDoors() - 1).setDst(cartoMob.getRoomFromName(name));
+                    cartoMob.getRoom(iRoom).getWall(key).addDoor(new Door(rect, cartoMob.getRoom(iRoom)));
+                    CustomDialogRoomChooserForDoor.RoomListener roomListener = name -> cartoMob.getRoom(iRoom).getWall(key).getDoor(cartoMob.getRoom(iRoom).getWall(key).nbDoors() - 1).setDst(cartoMob.getRoomFromName(name));
 
                     CustomDialogRoomChooserForDoor.RoomCreateListener roomCreateListener = () -> {
                         CustomDialogName.NameListener listenerRoomName = name -> {
@@ -145,7 +144,7 @@ public class WallActivity extends AppCompatActivity {
                                 return;
                             }
                             cartoMob.addRoom(new Room(name, "room" + (cartoMob.getSize())));
-                            wall.getDoor(wall.nbDoors() - 1).setDst(cartoMob.getRoomFromName(name));
+                            cartoMob.getRoom(iRoom).getWall(key).getDoor(cartoMob.getRoom(iRoom).getWall(key).nbDoors() - 1).setDst(cartoMob.getRoomFromName(name));
                             Intent sendData = new Intent(WallActivity.this, RoomActivity.class);
                             sendData.putExtra("cartoMob", cartoMob);
                             sendData.putExtra("iRoom", cartoMob.getSize() - 1);
@@ -157,7 +156,7 @@ public class WallActivity extends AppCompatActivity {
                     CustomDialogRoomChooserForDoor customDialogRoomChooserForDoor = new CustomDialogRoomChooserForDoor(this, roomListener, roomCreateListener, cartoMob.getRooms());
                     customDialogRoomChooserForDoor.show();
                 }
-                Log.d("Rectangle", "Les rectangles : " + wall.getDoors());
+                Log.d("Rectangle", "Les rectangles : " + cartoMob.getRoom(iRoom).getWall(key).getDoors());
             }
             return true;
         });

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -7,7 +8,8 @@
         android:id="@+id/save_chooser_recycler_view_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:labelFor="@+id/save_chooser_recycler_view_radio_btn" />
+        android:labelFor="@+id/save_chooser_recycler_view_radio_btn"
+        tools:ignore="LabelFor" />
 
     <RadioButton
         android:id="@+id/save_chooser_recycler_view_radio_btn"
