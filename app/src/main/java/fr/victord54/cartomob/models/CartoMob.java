@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import fr.victord54.cartomob.tools.FactoryID;
 
 public class CartoMob implements Serializable {
     private String name;
@@ -44,6 +41,14 @@ public class CartoMob implements Serializable {
         return -1;
     }
 
+    public Room getRoomFromName(String s) {
+        for (Room r: rooms) {
+            if (r.getName().equals(s))
+                return r;
+        }
+        return null;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -55,9 +60,9 @@ public class CartoMob implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "CartoMob{" +
-                ", name='" + name + '\'' +
-                ", rooms=" + rooms +
-                '}';
+        return "CartoMob {\n" +
+                "\tname='" + name + "',\n" +
+                "\trooms=" + rooms + "\n" +
+                "}";
     }
 }

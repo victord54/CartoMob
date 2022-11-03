@@ -3,15 +3,12 @@ package fr.victord54.cartomob.models;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fr.victord54.cartomob.tools.FactoryID;
-
-public class Room implements Iterable<Room>, Serializable {
+public class Room implements Iterable<Wall>, Serializable {
     private final String id;
-    private final String name;
+    private String name;
     private final HashMap<String, Wall> walls;
 
     public Room(String nom, String id) {
@@ -36,18 +33,27 @@ public class Room implements Iterable<Room>, Serializable {
         return walls.get(key);
     }
 
+    public boolean isWallExist(String k) {
+        return walls.containsKey(k);
+    }
+
+    public void setName(String s) {
+        name = s;
+    }
+
     @NonNull
     @Override
-    public Iterator<Room> iterator() {
-        return null;
+    public Iterator<Wall> iterator() {
+        return walls.values().iterator();
     }
 
     @NonNull
     @Override
     public String toString() {
         return "Room {\n" +
-                "\tid= '" + id + "',\n" +
-                "\tname= '" + name + "'\n" +
-                "}";
+                "\t\tid='" + id + "',\n" +
+                "\t\tname='" + name + "',\n" +
+                "\t\twalls=" + walls + "\n" +
+                "\t}";
     }
 }

@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "Cette pièce existe déjà", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                cartoMob.addRoom(new Room(name, "room"+(cartoMob.getSize())));
+                cartoMob.addRoom(new Room(name, "room" + (cartoMob.getSize())));
                 Intent sendData = new Intent(MainActivity.this, RoomActivity.class);
                 sendData.putExtra("cartoMob", cartoMob);
                 sendData.putExtra("iRoom", cartoMob.getSize() - 1);
@@ -124,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
             if (files != null) {
                 for (File f : files) {
                     Log.d("Files", f.getName());
-                    fileArrayList.add(f.getName());
+                    if (!f.getName().contains("img_"))
+                        fileArrayList.add(f.getName());
                 }
             }
 

@@ -1,10 +1,5 @@
 package fr.victord54.cartomob.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +18,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
+import fr.victord54.cartomob.models.Room;
+import fr.victord54.cartomob.models.Wall;
 import fr.victord54.cartomob.tools.Save;
 
 public class RoomActivity extends AppCompatActivity implements SensorEventListener {
@@ -32,6 +34,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     public static final int RESULT_CODE_ROOM = 123;
 
     private CartoMob cartoMob;
+    private Room room;
     private int iRoom;
     private String nsew;
 
@@ -39,6 +42,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     private ImageView compass;
     private TextView direction;
     private Button addPhoto;
+    private TextView infoPhoto;
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -49,14 +53,32 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     private float azimuth = 0f;
     private float correctAzimuth = 0f;
 
-    final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+    final ActivityResultLauncher<Intent> wallLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == WallActivity.RESULT_CODE_WALL) {
+            if (result.getData() != null) {
+                cartoMob = (CartoMob) result.getData().getSerializableExtra("cartoMob");
+                Log.d(LOG_TAG, "Données reçues !");
+            }
+        } else {
+            Log.d(LOG_TAG, "Aucune donnée reçue");
+        }
+        Log.d("ModelContent", cartoMob.toString());
+    });
+
+    final ActivityResultLauncher<Intent> photoLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         Bundle extras = null;
         if (result.getData() != null) {
             extras = result.getData().getExtras();
         }
         if (extras != null) {
             Bitmap bmp = (Bitmap) extras.get("data");
-            Save.getInstance().saveToStorage(this, bmp, "img_" + cartoMob.getName() + "_" + cartoMob.getRoom(iRoom).getName() + "_" + nsew);
+            Save.getInstance().saveBmpToStorage(this, bmp, "img_" + cartoMob.getName() + "_" + room.getName() + "_" + nsew);
+            room.addWall(nsew, new Wall(nsew, "img_" + cartoMob.getName() + "_" + room.getName() + "_" + nsew));
+            Intent sendData = new Intent(this, WallActivity.class);
+            sendData.putExtra("cartoMob", cartoMob);
+            sendData.putExtra("iRoom", iRoom);
+            sendData.putExtra("orientation", nsew);
+            wallLauncher.launch(sendData);
         }
     });
 
@@ -69,6 +91,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         compass = findViewById(R.id.roomActivity_compass);
         direction = findViewById(R.id.roomActivity_orientation);
         addPhoto = findViewById(R.id.roomActivity_add_photo);
+        infoPhoto = findViewById(R.id.roomActivity_info_photo);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(RoomActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
@@ -76,8 +99,9 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
 
         cartoMob = (CartoMob) getIntent().getSerializableExtra("cartoMob");
         iRoom = getIntent().getIntExtra("iRoom", 0);
+        room = cartoMob.getRoom(iRoom);
 
-        name.setText(cartoMob.getRoom(iRoom).getName());
+        name.setText(room.getName());
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -86,7 +110,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         addPhoto.setOnClickListener(v -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-                launcher.launch(intent);
+                photoLauncher.launch(intent);
             }
         });
     }
@@ -148,24 +172,36 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
             if (correctAzimuth > 330.f || correctAzimuth < 30.f) {
                 direction.setText(fr.victord54.cartomob.R.string.to_north);
                 nsew = "N";
+                verifyPhoto();
                 addPhoto.setEnabled(true);
             } else if (correctAzimuth > 240.f && correctAzimuth < 300.f) {
                 direction.setText(fr.victord54.cartomob.R.string.to_west);
                 nsew = "W";
+                verifyPhoto();
                 addPhoto.setEnabled(true);
             } else if (correctAzimuth > 150.f && correctAzimuth < 210.f) {
                 direction.setText(fr.victord54.cartomob.R.string.to_south);
                 nsew = "S";
+                verifyPhoto();
                 addPhoto.setEnabled(true);
             } else if (correctAzimuth > 60.f && correctAzimuth < 120.f) {
                 direction.setText(fr.victord54.cartomob.R.string.to_east);
                 nsew = "E";
+                verifyPhoto();
                 addPhoto.setEnabled(true);
             } else {
                 direction.setText(fr.victord54.cartomob.R.string.direction_unknown);
+                infoPhoto.setText("");
                 addPhoto.setEnabled(false);
             }
         }
+    }
+
+    private void verifyPhoto() {
+        if (room.isWallExist(nsew))
+            infoPhoto.setText(R.string.roomActivity_photo_already_added);
+        else
+            infoPhoto.setText("");
     }
 
     @Override

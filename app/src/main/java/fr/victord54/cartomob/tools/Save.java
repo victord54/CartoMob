@@ -1,9 +1,10 @@
 package fr.victord54.cartomob.tools;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,6 +42,25 @@ public class Save {
             fis.close();
             return o;
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void saveBmpToStorage(Context context, Bitmap bitmap, String name) {
+        try {
+            FileOutputStream fos = context.openFileOutput(name + ".photo", Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Bitmap loadBmpFromStorage(Context context, String name) {
+        try {
+            return BitmapFactory.decodeStream(context.openFileInput(name));
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
