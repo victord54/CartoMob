@@ -1,0 +1,282 @@
+@startuml
+class fr.victord54.cartomob.ExampleInstrumentedTest {
++ void useAppContext()
+}
+class fr.victord54.cartomob.activities.MainActivity {
++ {static} String LOG_TAG
+- CartoMob cartoMob
+- TextView nameBuilding
+- TextView nbRooms
+- Button newRoom
+- Button loadRoom
+- Button loadFile
+- Button writeFile
+- Button nameBuildingBtn
+- Button visit
+~ ActivityResultLauncher<Intent> newRoomLauncher
+~ ActivityResultLauncher<Intent> visitLauncher
+# void onCreate(Bundle)
+# void onResume()
+}
+class fr.victord54.cartomob.models.Door {
+- HashMap<String,Integer> rectangle
+- Room src
+- Room dst
++ Rect getRectangle()
++ void setDst(Room)
++ String toString()
+}
+class fr.victord54.cartomob.models.Wall {
+- String orientation
+- String nameOfPhoto
+- ArrayList<Door> doors
++ String getOrientation()
++ String getNameOfPhoto()
++ Door getDoor(int)
++ int nbDoors()
++ ArrayList<Door> getDoors()
++ void addDoor(Door)
++ String toString()
++ Iterator<Door> iterator()
+}
+class fr.victord54.cartomob.ExampleUnitTest {
++ void addition_isCorrect()
+}
+class fr.victord54.cartomob.views.SaveChooserAdapter {
+- ItemClickListener itemClickListener
+- ArrayList<String> files
+~ int selectedPosition
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ long getItemId(int)
++ int getItemViewType(int)
++ int getItemCount()
+}
+interface fr.victord54.cartomob.views.SaveChooserAdapter.ItemClickListener {
+~ void onClick(String)
+}
+class fr.victord54.cartomob.views.SaveChooserAdapter.ViewHolder {
+- RadioButton radioButton
+- TextView fileName
+}
+class fr.victord54.cartomob.views.RoomChooserAdapter {
+- ItemClickListener itemClickListener
+- ArrayList<Room> rooms
+~ int selectedPosition
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ long getItemId(int)
++ int getItemViewType(int)
++ int getItemCount()
+}
+interface fr.victord54.cartomob.views.RoomChooserAdapter.ItemClickListener {
+~ void onClick(String)
+}
+class fr.victord54.cartomob.views.RoomChooserAdapter.ViewHolder {
+- RadioButton radioButton
+- TextView roomName
+- TextView nbPhotos
+}
+class fr.victord54.cartomob.activities.VisitActivity {
++ {static} int RESULT_CODE_VISIT
+- CartoMob cartoMob
+- TextView name
+- ImageView photo
+- Button left
+- int iRoom
+# void onCreate(Bundle)
+# void onResume()
+}
+class fr.victord54.cartomob.views.CustomDialogSaveChooser {
+- Context context
+- FileListener fileListener
+- RecyclerView recyclerView
+- SaveChooserAdapter adapter
+- Button ok_btn
+- ArrayList<String> files
+- String nameOfFile
+# void onCreate(Bundle)
+}
+interface fr.victord54.cartomob.views.CustomDialogSaveChooser.FileListener {
+~ void nameFileSelected(String)
+}
+class fr.victord54.cartomob.BuildConfig {
++ {static} boolean DEBUG
++ {static} String APPLICATION_ID
++ {static} String BUILD_TYPE
++ {static} int VERSION_CODE
++ {static} String VERSION_NAME
+}
+class fr.victord54.cartomob.tools.Save {
+- {static} Save INSTANCE
++ {static} Save getInstance()
++ void saveToStorage(Context,Object,String)
++ Object loadFromStorage(Context,String)
++ void saveBmpToStorage(Context,Bitmap,String)
++ Bitmap loadBmpFromStorage(Context,String)
+}
+class fr.victord54.cartomob.activities.RoomActivity {
+- {static} String LOG_TAG
++ {static} int RESULT_CODE_ROOM
+- CartoMob cartoMob
+- int iRoom
+- String nsew
+- TextView name
+- ImageView compass
+- TextView direction
+- Button addPhoto
+- TextView infoPhoto
+- SensorManager sensorManager
+- Sensor accelerometer
+- Sensor magneticField
+- float[] gravitiy
+- float[] geomagnetic
+- float azimuth
+- float correctAzimuth
+~ ActivityResultLauncher<Intent> wallLauncher
+~ ActivityResultLauncher<Intent> photoLauncher
+# void onCreate(Bundle)
+# void onResume()
+# void onPause()
++ void onBackPressed()
++ void onSensorChanged(SensorEvent)
+- void verifyPhoto()
++ void onAccuracyChanged(Sensor,int)
+}
+class fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor {
+- Context context
+- RoomListener roomListener
+- RoomCreateListener roomCreateListener
+- RecyclerView recyclerView
+- RoomChooserAdapter adapter
+- Button ok_btn
+- Button create
+- ArrayList<Room> rooms
+- String nameOfRoom
+# void onCreate(Bundle)
+}
+interface fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor.RoomListener {
+~ void roomSelected(String)
+}
+interface fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor.RoomCreateListener {
+~ void create()
+}
+class fr.victord54.cartomob.views.CustomDialogName {
+- TextView title
+- EditText textInput
+- Button buttonOk
+- Context context
+- NameListener listener
+- String text
+# void onCreate(Bundle)
+}
+interface fr.victord54.cartomob.views.CustomDialogName.NameListener {
+~ void nameTyped(String)
+}
+class fr.victord54.cartomob.tools.FactoryID {
+- {static} FactoryID INSTANCE
+- int buildingID
+- int roomID
+- int doorID
+- int wallID
++ {static} FactoryID getInstance()
++ String getBuildingID()
++ String getRoomID()
++ String getDoorID()
++ String getWallID()
+}
+class fr.victord54.cartomob.models.CartoMob {
+- String name
+- ArrayList<Room> rooms
++ String getName()
++ boolean isEmpty()
++ int getSize()
++ Room getRoom(int)
++ ArrayList<Room> getRooms()
++ int getIndiceFromRoom(String)
++ Room getRoomFromName(String)
++ void setName(String)
++ void addRoom(Room)
++ String toString()
+}
+class fr.victord54.cartomob.views.CustomDialogRoomChooser {
+- Context context
+- RoomListener roomListener
+- RecyclerView recyclerView
+- RoomChooserAdapter adapter
+- Button ok_btn
+- ArrayList<Room> rooms
+- String nameOfRoom
+# void onCreate(Bundle)
+}
+interface fr.victord54.cartomob.views.CustomDialogRoomChooser.RoomListener {
+~ void roomSelected(String)
+}
+class fr.victord54.cartomob.activities.WallActivity {
+- {static} String LOG_TAG
++ {static} int RESULT_CODE_WALL
+- CartoMob cartoMob
+- int iRoom
+- String key
+- TextView name
+- TextView orientation
+- ImageView photo
+- SurfaceHolder surfaceHolder
+- SurfaceView surfaceView
+- Rect rect
+- Canvas canvas
+- int rectL
+- int rectR
+- int rectT
+- int rectB
+~ ActivityResultLauncher<Intent> newRoomLauncher
+# void onCreate(Bundle)
+- Paint setPaint()
++ void onBackPressed()
+}
+class fr.victord54.cartomob.models.Room {
+- String id
+- String name
+- HashMap<String,Wall> walls
++ boolean isRoomEmpty()
++ String getName()
++ void addWall(String,Wall)
++ Wall getWall(String)
++ HashMap<String,Wall> getWalls()
++ boolean isWallExist(String)
++ int getNbWalls()
++ void setName(String)
++ Iterator<Wall> iterator()
++ String toString()
+}
+
+
+androidx.appcompat.app.AppCompatActivity <|-- fr.victord54.cartomob.activities.MainActivity
+java.io.Serializable <|.. fr.victord54.cartomob.models.Door
+java.io.Serializable <|.. fr.victord54.cartomob.models.Wall
+fr.victord54.cartomob.models.Iterable <|.. fr.victord54.cartomob.models.Wall
+fr.victord54.cartomob.views.Adapter <|-- fr.victord54.cartomob.views.SaveChooserAdapter
+fr.victord54.cartomob.views.SaveChooserAdapter +.. fr.victord54.cartomob.views.SaveChooserAdapter.ItemClickListener
+fr.victord54.cartomob.views.SaveChooserAdapter +.. fr.victord54.cartomob.views.SaveChooserAdapter.ViewHolder
+fr.victord54.cartomob.views.ViewHolder <|-- fr.victord54.cartomob.views.SaveChooserAdapter.ViewHolder
+fr.victord54.cartomob.views.Adapter <|-- fr.victord54.cartomob.views.RoomChooserAdapter
+fr.victord54.cartomob.views.RoomChooserAdapter +.. fr.victord54.cartomob.views.RoomChooserAdapter.ItemClickListener
+fr.victord54.cartomob.views.RoomChooserAdapter +.. fr.victord54.cartomob.views.RoomChooserAdapter.ViewHolder
+fr.victord54.cartomob.views.ViewHolder <|-- fr.victord54.cartomob.views.RoomChooserAdapter.ViewHolder
+androidx.appcompat.app.AppCompatActivity <|-- fr.victord54.cartomob.activities.VisitActivity
+android.app.Dialog <|-- fr.victord54.cartomob.views.CustomDialogSaveChooser
+fr.victord54.cartomob.views.CustomDialogSaveChooser +.. fr.victord54.cartomob.views.CustomDialogSaveChooser.FileListener
+android.hardware.SensorEventListener <|.. fr.victord54.cartomob.activities.RoomActivity
+androidx.appcompat.app.AppCompatActivity <|-- fr.victord54.cartomob.activities.RoomActivity
+android.app.Dialog <|-- fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor
+fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor +.. fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor.RoomListener
+fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor +.. fr.victord54.cartomob.views.CustomDialogRoomChooserForDoor.RoomCreateListener
+android.app.Dialog <|-- fr.victord54.cartomob.views.CustomDialogName
+fr.victord54.cartomob.views.CustomDialogName +.. fr.victord54.cartomob.views.CustomDialogName.NameListener
+java.io.Serializable <|.. fr.victord54.cartomob.models.CartoMob
+android.app.Dialog <|-- fr.victord54.cartomob.views.CustomDialogRoomChooser
+fr.victord54.cartomob.views.CustomDialogRoomChooser +.. fr.victord54.cartomob.views.CustomDialogRoomChooser.RoomListener
+androidx.appcompat.app.AppCompatActivity <|-- fr.victord54.cartomob.activities.WallActivity
+fr.victord54.cartomob.models.Iterable <|.. fr.victord54.cartomob.models.Room
+java.io.Serializable <|.. fr.victord54.cartomob.models.Room
+@enduml
