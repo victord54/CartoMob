@@ -87,7 +87,6 @@ public class WallActivity extends AppCompatActivity {
 
         surfaceView.setZOrderOnTop(true);
         surfaceHolder = surfaceView.getHolder();
-
         surfaceHolder.setFormat(PixelFormat.TRANSPARENT);
 
         photo.setOnTouchListener((view, motionEvent) -> {

@@ -48,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
+    final ActivityResultLauncher<Intent> visitLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == VisitActivity.RESULT_CODE_VISIT) {
+            if (result.getData() != null) {
+                cartoMob = (CartoMob) result.getData().getSerializableExtra("cartoMob");
+            }
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
             if (files != null) {
                 for (File f : files) {
                     Log.d("Files", f.getName());
-                    if (!f.getName().contains("img_"))
-                        fileArrayList.add(f.getName());
+                    if (!f.getName().contains("img_")) fileArrayList.add(f.getName());
                 }
             }
 
@@ -144,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
             // TODO Créer une activité pour afficher la première pièce créée.
             //  L'activité aura 2 boutons (<-- et -->) pour changer l'orientation (NSEW).
             //  Les rectangles symbolisant les portes seront visibles et seront cliquables pour charger la pièce suivante.
-            Toast.makeText(this, "Charge la pièce à visiter", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, VisitActivity.class);
+            intent.putExtra("cartoMob", cartoMob);
+            visitLauncher.launch(intent);
         });
     }
 
@@ -161,10 +170,14 @@ public class MainActivity extends AppCompatActivity {
             if (cartoMob.isEmpty()) {
                 Log.i(LOG_TAG, "cartoMob est vide");
                 loadRoom.setEnabled(false);
+                visit.setEnabled(false);
                 nbRooms.setText(R.string.main_number_of_rooms_zero);
             } else {
                 loadRoom.setEnabled(true);
                 nbRooms.setText(getString(R.string.main_number_of_rooms, cartoMob.getSize()));
+                for (Room r : cartoMob.getRooms()) {
+                    visit.setEnabled(r.isComplete());
+                }
             }
         }
     }

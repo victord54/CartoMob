@@ -10,15 +10,17 @@ public class Room implements Iterable<Wall>, Serializable {
     private final String id;
     private String name;
     private final HashMap<String, Wall> walls;
+    private boolean isComplete;
 
     public Room(String nom, String id) {
         this.id = id;
         name = nom;
         walls = new HashMap<>(4);
+        isComplete = false;
     }
 
-    public boolean isRoomEmpty() {
-        return true;
+    public boolean isComplete() {
+        return isComplete;
     }
 
     public String getName() {
@@ -27,6 +29,8 @@ public class Room implements Iterable<Wall>, Serializable {
 
     public void addWall(String k, Wall w) {
         walls.put(k, w);
+        if (walls.size() == 4)
+            isComplete = true;
     }
 
     public Wall getWall(String key) {
