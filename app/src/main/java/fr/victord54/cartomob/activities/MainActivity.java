@@ -148,9 +148,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         visit.setOnClickListener(v -> {
-            // TODO Créer une activité pour afficher la première pièce créée.
-            //  L'activité aura 2 boutons (<-- et -->) pour changer l'orientation (NSEW).
-            //  Les rectangles symbolisant les portes seront visibles et seront cliquables pour charger la pièce suivante.
             Intent intent = new Intent(MainActivity.this, VisitActivity.class);
             intent.putExtra("cartoMob", cartoMob);
             visitLauncher.launch(intent);
