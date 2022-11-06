@@ -26,4 +26,7 @@
     <string name="left">Gauche</string>
     <string name="right">Droite</string>
     <string name="custom_dialog_room_chooser_for_door_chooser_title">Où mène cette porte ?</string>
+    <string name="room_chooser_adapter_nb_photos">%1$d photos sur 4</string>
+    <string name="room_complete">✅ Complète</string>
+    <string name="room_incomplete">❌ Incomplète</string>
 </resources>

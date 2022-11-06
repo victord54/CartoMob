@@ -1,5 +1,6 @@
 package fr.victord54.cartomob.views;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class RoomChooserAdapter extends RecyclerView.Adapter<RoomChooserAdapter.
 
     private final ItemClickListener itemClickListener;
     private final ArrayList<Room> rooms;
+    private Context context;
     int selectedPosition;
 
     public RoomChooserAdapter(ArrayList<Room> rooms, ItemClickListener itemClickListener) {
@@ -33,13 +35,19 @@ public class RoomChooserAdapter extends RecyclerView.Adapter<RoomChooserAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_chooser_recycler_view_item, parent, false);
+        context = parent.getContext();
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.roomName.setText(rooms.get(position).getName());
-        holder.nbPhotos.setText(String.valueOf(rooms.get(position).getNbWalls()));
+        if (rooms.get(position).getNbWalls() == 4)
+            holder.nbPhotos.setText(R.string.room_complete);
+        else
+            holder.nbPhotos.setText(R.string.room_incomplete);
+
+//        holder.nbPhotos.setText(context.getString(R.string.room_chooser_adapter_nb_photos, rooms.get(position).getNbWalls()));
 
         holder.radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {

@@ -26,4 +26,7 @@
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="custom_dialog_room_chooser_for_door_chooser_title">Where does this door lead?</string>
+    <string name="room_chooser_adapter_nb_photos">%1$d photos on 4</string>
+    <string name="room_complete">✅ Complete</string>
+    <string name="room_incomplete">❌ Incomplete</string>
 </resources>

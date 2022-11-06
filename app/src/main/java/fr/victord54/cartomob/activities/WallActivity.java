@@ -125,6 +125,8 @@ public class WallActivity extends AppCompatActivity {
                 canvas = surfaceHolder.lockCanvas();
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                 for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                    if (d.getDst() == null)
+                        cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
                     canvas.drawRect(d.getRectangle(), setPaint());
                 }
                 canvas.drawRect(rect, setPaint());
@@ -158,6 +160,7 @@ public class WallActivity extends AppCompatActivity {
                     rooms.remove(cartoMob.getRoom(iRoom));
                     CustomDialogRoomChooserForDoor customDialogRoomChooserForDoor = new CustomDialogRoomChooserForDoor(this, roomListener, roomCreateListener, rooms);
                     customDialogRoomChooserForDoor.show();
+                    Log.d("Debug_door", cartoMob.toString());
                 }
                 Log.d("Rectangle", "Les rectangles : " + cartoMob.getRoom(iRoom).getWall(key).getDoors());
             }

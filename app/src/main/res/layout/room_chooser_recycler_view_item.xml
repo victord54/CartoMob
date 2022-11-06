@@ -9,6 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textAlignment="textStart"
+        android:layout_marginEnd="24dp"
         android:labelFor="@+id/room_chooser_recycler_view_radio_btn"
         tools:ignore="LabelFor" />
 
@@ -16,6 +18,8 @@
         android:id="@+id/room_chooser_recylcer_view_nb_photos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="textEnd"
         android:layout_weight="1" />
 
     <RadioButton
