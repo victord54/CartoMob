@@ -47,6 +47,8 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     private TextView southWallState;
     private TextView westWallState;
 
+    // TODO: Ajout d'un bouton pour pouvoir modifier un mur qui contient déjà une photo
+
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magneticField;
