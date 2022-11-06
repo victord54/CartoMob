@@ -20,7 +20,7 @@
     <string name="to_south">To the south</string>
     <string name="to_east">To the east</string>
     <string name="direction_unknown">Direction is unknown</string>
-    <string name="roomActivity_photo_already_added">Warning ! There is already a photo</string>
+    <string name="roomActivity_edit_photo">Edit the wall in front of you</string>
     <string name="custom_dialog_room_chooser_btn_create">Create a room</string>
     <string name="main_visit_building">Visit the building</string>
     <string name="left">Left</string>

@@ -20,7 +20,7 @@
     <string name="to_south">Vers le sud</string>
     <string name="to_east">Vers l\'est</string>
     <string name="direction_unknown">La direction est inconnue</string>
-    <string name="roomActivity_photo_already_added">Attention  Il y a déjà une photo</string>
+    <string name="roomActivity_edit_photo">Modifier le mur en face de vous</string>
     <string name="custom_dialog_room_chooser_btn_create">Créer une pièce</string>
     <string name="main_visit_building">Visiter le batiment</string>
     <string name="left">Gauche</string>

@@ -77,6 +77,7 @@ public class VisitActivity extends AppCompatActivity {
             layout.removeView(b);
         doors.clear();
         for (Door d: cartoMob.getRoom(iRoom).getWall(orientation[i]).getDoors()) {
+            Log.d("Doors", d.toString());
             Button tmp = new Button(this);
             tmp.setText(d.getDst().getName());
             tmp.setX(d.getRectangle().left);

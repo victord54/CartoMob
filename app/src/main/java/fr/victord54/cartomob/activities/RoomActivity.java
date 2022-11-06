@@ -40,14 +40,12 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     private ImageView compass;
     private TextView direction;
     private Button addPhoto;
-    private TextView infoPhoto;
+    private Button infoPhoto;
 
     private TextView northWallState;
     private TextView eastWallState;
     private TextView southWallState;
     private TextView westWallState;
-
-    // TODO: Ajout d'un bouton pour pouvoir modifier un mur qui contient déjà une photo
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -97,7 +95,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         compass = findViewById(R.id.roomActivity_compass);
         direction = findViewById(R.id.roomActivity_orientation);
         addPhoto = findViewById(R.id.roomActivity_add_photo);
-        infoPhoto = findViewById(R.id.roomActivity_info_photo);
+        infoPhoto = findViewById(R.id.roomActivity_edit_photo);
 
         northWallState = findViewById(R.id.roomActivity_N_wall_state);
         eastWallState = findViewById(R.id.roomActivity_E_wall_state);
@@ -122,6 +120,14 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
             if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
                 photoLauncher.launch(intent);
             }
+        });
+
+        infoPhoto.setOnClickListener(v -> {
+            Intent sendData = new Intent(RoomActivity.this, WallActivity.class);
+            sendData.putExtra("cartoMob", cartoMob);
+            sendData.putExtra("iRoom", iRoom);
+            sendData.putExtra("orientation", nsew);
+            wallLauncher.launch(sendData);
         });
     }
 
@@ -218,17 +224,14 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
                 addPhoto.setEnabled(true);
             } else {
                 direction.setText(fr.victord54.cartomob.R.string.direction_unknown);
-                infoPhoto.setText("");
+                infoPhoto.setEnabled(false);
                 addPhoto.setEnabled(false);
             }
         }
     }
 
     private void verifyPhoto() {
-        if (cartoMob.getRoom(iRoom).isWallExist(nsew))
-            infoPhoto.setText(R.string.roomActivity_photo_already_added);
-        else
-            infoPhoto.setText("");
+        infoPhoto.setEnabled(cartoMob.getRoom(iRoom).isWallExist(nsew));
     }
 
     @Override

@@ -52,6 +52,9 @@ public class WallActivity extends AppCompatActivity {
     private int rectT;
     private int rectB;
 
+    // TODO: Affichage propre des portes déjà placées.
+    // TODO: Possibilité d'éditer les portes déjà placées.
+
     final ActivityResultLauncher<Intent> newRoomLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RoomActivity.RESULT_CODE_ROOM) {
             if (result.getData() != null) {
@@ -120,8 +123,6 @@ public class WallActivity extends AppCompatActivity {
 
 //                Log.d("Rectangle", "le rectangle : " + rect.toShortString());
 
-                setPaint();
-
                 canvas = surfaceHolder.lockCanvas();
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                 for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
@@ -179,6 +180,10 @@ public class WallActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent reply = new Intent();
+        for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+            if (d.getDst() == null)
+                cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+        }
         reply.putExtra("cartoMob", cartoMob);
         setResult(RESULT_CODE_WALL, reply);
         Log.d("LOG_TAG", "On renvoie les données");
