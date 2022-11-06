@@ -29,4 +29,8 @@
     <string name="room_chooser_adapter_nb_photos">%1$d photos on 4</string>
     <string name="room_complete">✅ Complete</string>
     <string name="room_incomplete">❌ Incomplete</string>
+    <string name="roomActivity_N_wall_state">North wall : %1$s</string>
+    <string name="roomActivity_E_wall_state">East wall : %1$s</string>
+    <string name="roomActivity_S_wall_state">South wall : %1$s</string>
+    <string name="roomActivity_W_wall_state">West wall : %1$s</string>
 </resources>

@@ -42,6 +42,11 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
     private Button addPhoto;
     private TextView infoPhoto;
 
+    private TextView northWallState;
+    private TextView eastWallState;
+    private TextView southWallState;
+    private TextView westWallState;
+
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magneticField;
@@ -92,6 +97,11 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         addPhoto = findViewById(R.id.roomActivity_add_photo);
         infoPhoto = findViewById(R.id.roomActivity_info_photo);
 
+        northWallState = findViewById(R.id.roomActivity_N_wall_state);
+        eastWallState = findViewById(R.id.roomActivity_E_wall_state);
+        southWallState = findViewById(R.id.roomActivity_S_wall_state);
+        westWallState = findViewById(R.id.roomActivity_W_wall_state);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(RoomActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
         }
@@ -118,6 +128,23 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, magneticField, SensorManager.SENSOR_DELAY_GAME);
+
+        if (cartoMob.getRoom(iRoom).isWallExist("N"))
+            northWallState.setText(getString(R.string.roomActivity_N_wall_state, "✅"));
+        else
+            northWallState.setText(getString(R.string.roomActivity_N_wall_state, "❌"));
+        if (cartoMob.getRoom(iRoom).isWallExist("E"))
+            eastWallState.setText(getString(R.string.roomActivity_E_wall_state, "✅"));
+        else
+            eastWallState.setText(getString(R.string.roomActivity_E_wall_state, "❌"));
+        if (cartoMob.getRoom(iRoom).isWallExist("S"))
+            southWallState.setText(getString(R.string.roomActivity_S_wall_state, "✅"));
+        else
+            southWallState.setText(getString(R.string.roomActivity_S_wall_state, "❌"));
+        if (cartoMob.getRoom(iRoom).isWallExist("W"))
+            westWallState.setText(getString(R.string.roomActivity_W_wall_state, "✅"));
+        else
+            westWallState.setText(getString(R.string.roomActivity_W_wall_state, "❌"));
     }
 
     @Override
