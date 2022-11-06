@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/custom_dialog_room_chooser_title" />
+        android:text="@string/custom_dialog_room_chooser_for_door_chooser_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/custom_dialog_room_chooser_for_door_recycler_view"

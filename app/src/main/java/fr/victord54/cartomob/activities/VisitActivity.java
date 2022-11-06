@@ -3,6 +3,7 @@ package fr.victord54.cartomob.activities;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -77,6 +78,7 @@ public class VisitActivity extends AppCompatActivity {
         doors.clear();
         for (Door d: cartoMob.getRoom(iRoom).getWall(orientation[i]).getDoors()) {
             Button tmp = new Button(this);
+            tmp.setText(d.getDst().getName());
             tmp.setX(d.getRectangle().left);
             tmp.setY(d.getRectangle().top);
             tmp.setWidth(d.getRectangle().right - d.getRectangle().left);
@@ -84,6 +86,14 @@ public class VisitActivity extends AppCompatActivity {
             tmp.setAlpha(0.5F);
             doors.add(tmp);
             layout.addView(tmp);
+        }
+
+        for (Button b: doors) {
+            b.setOnClickListener(v -> {
+                Log.d("Door", "Door dst : " + b.getText());
+                iRoom = cartoMob.getIndiceFromRoom((String) b.getText());
+                onResume();
+            });
         }
     }
 

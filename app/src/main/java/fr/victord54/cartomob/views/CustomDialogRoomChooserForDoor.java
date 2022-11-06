@@ -54,6 +54,9 @@ public class CustomDialogRoomChooserForDoor extends Dialog {
         ok_btn = findViewById(R.id.custom_dialog_room_chooser_for_door_btn_ok);
         create = findViewById(R.id.custom_dialog_room_chooser_for_door_btn_create);
 
+        if (rooms.isEmpty())
+            ok_btn.setEnabled(false);
+
         @SuppressLint("NotifyDataSetChanged") RoomChooserAdapter.ItemClickListener itemClickListener = s -> {
             recyclerView.post(() -> adapter.notifyDataSetChanged());
             nameOfRoom = s;

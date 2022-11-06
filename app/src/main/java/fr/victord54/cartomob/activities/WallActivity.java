@@ -22,6 +22,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
 import fr.victord54.cartomob.models.Door;
@@ -152,7 +154,9 @@ public class WallActivity extends AppCompatActivity {
                         final CustomDialogName roomName = new CustomDialogName(WallActivity.this, listenerRoomName, getText(R.string.custom_dialog_name_title_room).toString());
                         roomName.show();
                     };
-                    CustomDialogRoomChooserForDoor customDialogRoomChooserForDoor = new CustomDialogRoomChooserForDoor(this, roomListener, roomCreateListener, cartoMob.getRooms());
+                    ArrayList<Room> rooms = new ArrayList<>(cartoMob.getRooms());
+                    rooms.remove(cartoMob.getRoom(iRoom));
+                    CustomDialogRoomChooserForDoor customDialogRoomChooserForDoor = new CustomDialogRoomChooserForDoor(this, roomListener, roomCreateListener, rooms);
                     customDialogRoomChooserForDoor.show();
                 }
                 Log.d("Rectangle", "Les rectangles : " + cartoMob.getRoom(iRoom).getWall(key).getDoors());

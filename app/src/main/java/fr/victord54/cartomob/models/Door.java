@@ -26,6 +26,10 @@ public class Door implements Serializable {
         return new Rect(rectangle.get("left"), rectangle.get("top"), rectangle.get("right"), rectangle.get("bottom"));
     }
 
+    public Room getDst() {
+        return dst;
+    }
+
     public void setDst(Room r) {
         dst = r;
     }

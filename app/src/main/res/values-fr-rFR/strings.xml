@@ -25,4 +25,5 @@
     <string name="main_visit_building">Visiter le batiment</string>
     <string name="left">Gauche</string>
     <string name="right">Droite</string>
+    <string name="custom_dialog_room_chooser_for_door_chooser_title">Où mène cette porte ?</string>
 </resources>
