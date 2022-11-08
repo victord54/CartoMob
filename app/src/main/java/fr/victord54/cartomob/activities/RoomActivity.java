@@ -192,7 +192,7 @@ public class RoomActivity extends AppCompatActivity implements SensorEventListen
             azimuth = (float) Math.toDegrees(orientation[0]);
             azimuth = (azimuth + 360) % 360;
 
-            Log.d("Azimuth", "azimuth : " + azimuth);
+//            Log.d("Azimuth", "azimuth : " + azimuth);
 
             Animation animation = new RotateAnimation(-correctAzimuth, -azimuth, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             correctAzimuth = azimuth;

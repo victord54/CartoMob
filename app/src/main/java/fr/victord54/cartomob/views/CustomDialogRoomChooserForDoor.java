@@ -25,9 +25,14 @@ public class CustomDialogRoomChooserForDoor extends Dialog {
         void create();
     }
 
+    public interface RoomDismissListener {
+        void dismiss();
+    }
+
     private final Context context;
     private final RoomListener roomListener;
     private final RoomCreateListener roomCreateListener;
+    private final RoomDismissListener roomDismissListener;
 
     private RecyclerView recyclerView;
     private RoomChooserAdapter adapter;
@@ -37,11 +42,12 @@ public class CustomDialogRoomChooserForDoor extends Dialog {
     private final ArrayList<Room> rooms;
     private String nameOfRoom;
 
-    public CustomDialogRoomChooserForDoor(@NonNull Context context, RoomListener rl, RoomCreateListener rcl, ArrayList<Room> rooms) {
+    public CustomDialogRoomChooserForDoor(@NonNull Context context, RoomListener rl, RoomCreateListener rcl, RoomDismissListener rdl, ArrayList<Room> rooms) {
         super(context);
         this.context = context;
         roomListener = rl;
         roomCreateListener = rcl;
+        roomDismissListener = rdl;
         this.rooms = rooms;
     }
 
@@ -77,5 +83,11 @@ public class CustomDialogRoomChooserForDoor extends Dialog {
             dismiss();
             roomCreateListener.create();
         });
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        roomDismissListener.dismiss();
     }
 }

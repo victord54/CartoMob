@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -94,6 +95,32 @@ public class WallActivity extends AppCompatActivity {
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.setFormat(PixelFormat.TRANSPARENT);
 
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(@NonNull SurfaceHolder holder) {
+                canvas = holder.lockCanvas();
+                Log.d("Rectangle", "Les rectangles (creation canvas)" + cartoMob.getRoom(iRoom).getWall(key).getDoors());
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                    if (d.getDst() == null)
+                        cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+                    canvas.drawRect(d.getRectangle(), setPaint());
+                }
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+
+            @Override
+            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+
+            }
+        });
+
+
         photo.setOnTouchListener((view, motionEvent) -> {
             if ((motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) && motionEvent.getPointerCount() == 2) {
                 rectL = (int) (motionEvent.getX(0) + photo.getX());
@@ -108,7 +135,6 @@ public class WallActivity extends AppCompatActivity {
                 if (rectB < photo.getY()) rectB = (int) photo.getY();
                 if (rectT > photo.getY() + photo.getHeight())
                     rectT = (int) (photo.getY() + photo.getHeight());
-
 
                 rect = new Rect(rectL, rectT, rectR, rectB);
                 rect.sort();
@@ -134,12 +160,20 @@ public class WallActivity extends AppCompatActivity {
                 surfaceHolder.unlockCanvasAndPost(canvas);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 canvas = surfaceHolder.lockCanvas();
-//                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                    if (d.getDst() == null)
+                        cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+                    canvas.drawRect(d.getRectangle(), setPaint());
+                }
                 surfaceHolder.unlockCanvasAndPost(canvas);
-
                 if (rect != null) {
-                    cartoMob.getRoom(iRoom).getWall(key).addDoor(new Door(rect, cartoMob.getRoom(iRoom)));
-                    CustomDialogRoomChooserForDoor.RoomListener roomListener = name -> cartoMob.getRoom(iRoom).getWall(key).getDoor(cartoMob.getRoom(iRoom).getWall(key).nbDoors() - 1).setDst(cartoMob.getRoomFromName(name));
+                    CustomDialogRoomChooserForDoor.RoomListener roomListener = name -> {
+                        Door tmp = new Door(rect, cartoMob.getRoom(iRoom));
+                        rect = null; // On a plus besoin eet comme ça la prochaine porte (rectangle) sera recréé.
+                        tmp.setDst(cartoMob.getRoomFromName(name));
+                        cartoMob.getRoom(iRoom).getWall(key).addDoor(tmp);
+                    };
 
                     CustomDialogRoomChooserForDoor.RoomCreateListener roomCreateListener = () -> {
                         CustomDialogName.NameListener listenerRoomName = name -> {
@@ -157,9 +191,21 @@ public class WallActivity extends AppCompatActivity {
                         final CustomDialogName roomName = new CustomDialogName(WallActivity.this, listenerRoomName, getText(R.string.custom_dialog_name_title_room).toString());
                         roomName.show();
                     };
+
+                    CustomDialogRoomChooserForDoor.RoomDismissListener roomDismissListener = () -> {
+                        // TODO: Bug à vérifier !!
+                        rect = null;
+                        canvas = surfaceHolder.lockCanvas();
+                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                        for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                            if (d.getDst() == null)
+                                cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+                            canvas.drawRect(d.getRectangle(), setPaint());
+                        }
+                    };
                     ArrayList<Room> rooms = new ArrayList<>(cartoMob.getRooms());
                     rooms.remove(cartoMob.getRoom(iRoom));
-                    CustomDialogRoomChooserForDoor customDialogRoomChooserForDoor = new CustomDialogRoomChooserForDoor(this, roomListener, roomCreateListener, rooms);
+                    CustomDialogRoomChooserForDoor customDialogRoomChooserForDoor = new CustomDialogRoomChooserForDoor(this, roomListener, roomCreateListener, roomDismissListener, rooms);
                     customDialogRoomChooserForDoor.show();
                     Log.d("Debug_door", cartoMob.toString());
                 }
@@ -171,8 +217,9 @@ public class WallActivity extends AppCompatActivity {
 
     private Paint setPaint() {
         Paint paintRectangle = new Paint();
-        paintRectangle.setColor(Color.YELLOW);
-        paintRectangle.setStyle(Paint.Style.STROKE);
+        paintRectangle.setColor(Color.GRAY);
+        paintRectangle.setAlpha(128);
+        paintRectangle.setStyle(Paint.Style.FILL);
         paintRectangle.setStrokeWidth(7);
         return paintRectangle;
     }
@@ -188,5 +235,18 @@ public class WallActivity extends AppCompatActivity {
         setResult(RESULT_CODE_WALL, reply);
         Log.d("LOG_TAG", "On renvoie les données");
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        canvas = surfaceHolder.lockCanvas();
+//        Log.d("Canvas", canvas.toString());
+//        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+//        for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+//            if (d.getDst() == null)
+//                cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+//            canvas.drawRect(d.getRectangle(), setPaint());
+//        }
     }
 }
