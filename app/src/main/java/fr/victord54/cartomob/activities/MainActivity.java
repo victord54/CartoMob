@@ -3,6 +3,8 @@ package fr.victord54.cartomob.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
@@ -82,17 +85,7 @@ public class MainActivity extends AppCompatActivity {
             nbRooms.setText(getString(R.string.main_number_of_rooms, cartoMob.getSize()));
         }
 
-        nameBuildingBtn.setOnClickListener(view -> {
-            CustomDialogName.NameListener listenerCartoName = name -> {
-                cartoMob.setName(name);
-                nameBuilding.setText(cartoMob.getName());
-                Log.d("ModelContent", cartoMob.toString());
-                nameBuildingBtn.setVisibility(View.INVISIBLE);
-                writeFile.setEnabled(true);
-            };
-            final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName, getText(R.string.custom_dialog_name_title_building).toString());
-            cartoName.show();
-        });
+        nameBuildingBtn.setOnClickListener(view -> setBuildingName());
 
         newRoom.setOnClickListener(view -> {
             CustomDialogName.NameListener listenerRoomName = name -> {
@@ -154,6 +147,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setBuildingName() {
+        CustomDialogName.NameListener listenerCartoName = name -> {
+            cartoMob.setName(name);
+            nameBuilding.setText(cartoMob.getName());
+            Log.d("ModelContent", cartoMob.toString());
+            nameBuildingBtn.setVisibility(View.INVISIBLE);
+            writeFile.setEnabled(true);
+        };
+        final CustomDialogName cartoName = new CustomDialogName(this, listenerCartoName, getText(R.string.custom_dialog_name_title_building).toString());
+        cartoName.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -177,5 +182,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_rename) {
+            setBuildingName();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

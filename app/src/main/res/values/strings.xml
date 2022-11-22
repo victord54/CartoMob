@@ -36,4 +36,5 @@
     <string name="complete" translatable="false">✅</string>
     <string name="incomplete" translatable="false">❌</string>
     <string name="wallActivity_reset_doors">Reset doors</string>
+    <string name="pathfinding">Pathfinding</string>
 </resources>
