@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 
 import java.io.Serializable;
@@ -62,7 +63,19 @@ public class CartoMob implements Serializable {
     }
 
     public Graph<Room, DefaultEdge> modelToGraph() {
-        Graph<Room, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+        Graph<Room, DefaultEdge> graph = new SimpleDirectedGraph<>(DefaultEdge.class);
+
+        for (Room r: getRooms()) {
+            graph.addVertex(r);
+        }
+
+        for (Room r: getRooms()) {
+            for (Wall w: r.getWalls().values()) {
+                for (Door d: w.getDoors()) {
+                    graph.addEdge(r, d.getDst());
+                }
+            }
+        }
 
         return graph;
     }

@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             CustomDialogSaveChooser.FileListener listenerFileName = name -> {
                 Log.d("FileChooser", "nom du fichier dans main : " + name);
                 cartoMob = (CartoMob) Save.getInstance().loadFromStorage(MainActivity.this, name);
+                Log.d("Graph", cartoMob.modelToGraph().toString());
                 onResume();
             };
             final CustomDialogSaveChooser dialogSaveChooser = new CustomDialogSaveChooser(this, listenerFileName, fileArrayList);
