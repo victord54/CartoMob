@@ -2,6 +2,10 @@ package fr.victord54.cartomob.models;
 
 import androidx.annotation.NonNull;
 
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -55,6 +59,12 @@ public class CartoMob implements Serializable {
 
     public void addRoom(Room r) {
         rooms.add(r);
+    }
+
+    public Graph<Room, DefaultEdge> modelToGraph() {
+        Graph<Room, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+
+        return graph;
     }
 
     @NonNull
