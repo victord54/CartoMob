@@ -55,9 +55,6 @@ public class WallActivity extends AppCompatActivity {
     private int rectT;
     private int rectB;
 
-    // TODO: Affichage propre des portes déjà placées.
-    // TODO: Possibilité d'éditer les portes déjà placées.
-
     final ActivityResultLauncher<Intent> newRoomLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RoomActivity.RESULT_CODE_ROOM) {
             if (result.getData() != null) {
@@ -182,7 +179,6 @@ public class WallActivity extends AppCompatActivity {
                         roomName.show();
                     };
 
-                    // TODO: Bug à vérifier !!
                     CustomDialogRoomChooserForDoor.RoomDismissListener roomDismissListener = this::showDoors;
                     ArrayList<Room> rooms = new ArrayList<>(cartoMob.getRooms());
                     rooms.remove(cartoMob.getRoom(iRoom));
