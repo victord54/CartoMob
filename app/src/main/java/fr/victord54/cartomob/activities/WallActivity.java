@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class WallActivity extends AppCompatActivity {
     private ImageView photo;
     private SurfaceHolder surfaceHolder;
     private SurfaceView surfaceView;
+    private Button resetDoors;
     private Rect rect;
     private Canvas canvas = new Canvas();
 
@@ -84,6 +86,7 @@ public class WallActivity extends AppCompatActivity {
         orientation = findViewById(R.id.wallActivity_orientation);
         photo = findViewById(R.id.wallActivity_photo);
         surfaceView = findViewById(R.id.wallActivity_surfaceView);
+        resetDoors = findViewById(R.id.wallActivity_reset_doors);
 
         name.setText(cartoMob.getRoom(iRoom).getName());
 
@@ -101,7 +104,7 @@ public class WallActivity extends AppCompatActivity {
                 canvas = holder.lockCanvas();
                 Log.d("Rectangle", "Les rectangles (creation canvas)" + cartoMob.getRoom(iRoom).getWall(key).getDoors());
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                for (Door d : cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
                     if (d.getDst() == null)
                         cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
                     canvas.drawRect(d.getRectangle(), setPaint());
@@ -152,27 +155,25 @@ public class WallActivity extends AppCompatActivity {
                 canvas = surfaceHolder.lockCanvas();
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                 for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
-                    if (d.getDst() == null)
-                        cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
                     canvas.drawRect(d.getRectangle(), setPaint());
                 }
                 canvas.drawRect(rect, setPaint());
                 surfaceHolder.unlockCanvasAndPost(canvas);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                canvas = surfaceHolder.lockCanvas();
-                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
-                    if (d.getDst() == null)
-                        cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
-                    canvas.drawRect(d.getRectangle(), setPaint());
-                }
-                surfaceHolder.unlockCanvasAndPost(canvas);
                 if (rect != null) {
                     CustomDialogRoomChooserForDoor.RoomListener roomListener = name -> {
                         Door tmp = new Door(rect, cartoMob.getRoom(iRoom));
-                        rect = null; // On a plus besoin eet comme ça la prochaine porte (rectangle) sera recréé.
                         tmp.setDst(cartoMob.getRoomFromName(name));
                         cartoMob.getRoom(iRoom).getWall(key).addDoor(tmp);
+
+                        // On rafraichit l'affichage avec le nouveau rectangle (porte)
+                        canvas = surfaceHolder.lockCanvas();
+                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                        for (Door d : cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                            canvas.drawRect(d.getRectangle(), setPaint());
+                        }
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+//                        rect = null; // On a plus besoin et comme ça la prochaine porte (rectangle) sera recréé.
                     };
 
                     CustomDialogRoomChooserForDoor.RoomCreateListener roomCreateListener = () -> {
@@ -194,14 +195,17 @@ public class WallActivity extends AppCompatActivity {
 
                     CustomDialogRoomChooserForDoor.RoomDismissListener roomDismissListener = () -> {
                         // TODO: Bug à vérifier !!
-                        rect = null;
                         canvas = surfaceHolder.lockCanvas();
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                        for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
-                            if (d.getDst() == null)
+                        for (Door d : cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                            if (d.getDst() == null) {
                                 cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+                                Log.d("ResetDoors", "Effacement des portes menant à rien");
+                            }
                             canvas.drawRect(d.getRectangle(), setPaint());
                         }
+                        Log.d("ResetDoors", cartoMob.getRoom(iRoom).getWall(key).getDoors().toString());
+                        surfaceHolder.unlockCanvasAndPost(canvas);
                     };
                     ArrayList<Room> rooms = new ArrayList<>(cartoMob.getRooms());
                     rooms.remove(cartoMob.getRoom(iRoom));
@@ -212,6 +216,16 @@ public class WallActivity extends AppCompatActivity {
                 Log.d("Rectangle", "Les rectangles : " + cartoMob.getRoom(iRoom).getWall(key).getDoors());
             }
             return true;
+        });
+
+        resetDoors.setOnClickListener(view -> {
+            cartoMob.getRoom(iRoom).getWall(key).getDoors().clear();
+            canvas = surfaceHolder.lockCanvas();
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            for (Door d : cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+                canvas.drawRect(d.getRectangle(), setPaint());
+            }
+            surfaceHolder.unlockCanvasAndPost(canvas);
         });
     }
 
@@ -227,9 +241,8 @@ public class WallActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent reply = new Intent();
-        for (Door d: cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
-            if (d.getDst() == null)
-                cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
+        for (Door d : cartoMob.getRoom(iRoom).getWall(key).getDoors()) {
+            if (d.getDst() == null) cartoMob.getRoom(iRoom).getWall(key).getDoors().remove(d);
         }
         reply.putExtra("cartoMob", cartoMob);
         setResult(RESULT_CODE_WALL, reply);
