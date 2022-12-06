@@ -62,11 +62,6 @@ public class Room implements Iterable<Wall>, Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "Room{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", walls=" + walls +
-                ", isComplete=" + isComplete +
-                '}';
+        return id;
     }
 }

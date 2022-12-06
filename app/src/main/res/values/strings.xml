@@ -37,4 +37,7 @@
     <string name="incomplete" translatable="false">❌</string>
     <string name="wallActivity_reset_doors">Reset doors</string>
     <string name="pathfinding">Pathfinding</string>
+    <string name="main_visit_building_short_path">Go the a room ?</string>
+    <string name="short_path_arrived">You are arrived !</string>
+    <string name="short_path_next_room">Go to the room %1$s</string>
 </resources>

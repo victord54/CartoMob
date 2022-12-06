@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_rename"
-        android:title="@string/main_name_of_building_btn" />
+        android:id="@+id/menu_shortpath"
+        android:title="@string/main_visit_building_short_path" />
 </menu>

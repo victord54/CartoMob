@@ -4,19 +4,30 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultEdge;
 
 import java.util.ArrayList;
 
 import fr.victord54.cartomob.R;
 import fr.victord54.cartomob.models.CartoMob;
 import fr.victord54.cartomob.models.Door;
+import fr.victord54.cartomob.models.Room;
 import fr.victord54.cartomob.tools.Save;
+import fr.victord54.cartomob.views.CustomDialogRoomChooser;
 
 public class VisitActivity extends AppCompatActivity {
     public static final int RESULT_CODE_VISIT = 789;
@@ -25,9 +36,17 @@ public class VisitActivity extends AppCompatActivity {
 
     private ConstraintLayout layout;
     private TextView name;
+    private TextView shortPathText;
     private ImageView photo;
     private Button left, right;
     ArrayList<Button> doors;
+
+    private DijkstraShortestPath<Room, DefaultEdge> dijkstraShortestPath;
+    private GraphPath<Room, DefaultEdge> path;
+    private Room nextRoom;
+    private Room endRoom;
+    private boolean arrived = true;
+
 
     private int iRoom;
     private final String[] orientation = {"N", "E", "S", "W"};
@@ -43,17 +62,23 @@ public class VisitActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.visitActivity_layout);
         name = findViewById(R.id.visitActivity_room_name);
+        shortPathText = findViewById(R.id.visit_shortpath_text);
         photo = findViewById(R.id.visitActivity_photo);
         left = findViewById(R.id.visitActivity_left_side);
         right = findViewById(R.id.visitActivity_right_side);
 
+        if (arrived)
+            shortPathText.setVisibility(View.INVISIBLE);
+
         left.setOnClickListener(v -> {
             minusI();
+            shortPath();
             onResume();
         });
 
         right.setOnClickListener(v -> {
             plusI();
+            shortPath();
             onResume();
         });
     }
@@ -96,6 +121,7 @@ public class VisitActivity extends AppCompatActivity {
                 onResume();
             });
         }
+        shortPath();
     }
 
     private Paint setPaint() {
@@ -104,5 +130,42 @@ public class VisitActivity extends AppCompatActivity {
         paintRectangle.setStyle(Paint.Style.STROKE);
         paintRectangle.setStrokeWidth(7);
         return paintRectangle;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_visit_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_shortpath) {
+            CustomDialogRoomChooser.RoomListener roomListener = name -> {
+                dijkstraShortestPath = new DijkstraShortestPath<>(cartoMob.modelToGraph());
+                endRoom = cartoMob.getRoomFromName(name);
+                arrived = false;
+                shortPath();
+            };
+            CustomDialogRoomChooser customDialogRoomChooser = new CustomDialogRoomChooser(this, roomListener, cartoMob.getRooms());
+            customDialogRoomChooser.show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    void shortPath() {
+        if (!arrived) {
+            if (endRoom.equals(cartoMob.getRoom(iRoom))) {
+                shortPathText.setVisibility(View.INVISIBLE);
+                arrived = true;
+                Toast.makeText(this, getString(R.string.short_path_arrived), Toast.LENGTH_SHORT).show();
+            } else {
+                path = dijkstraShortestPath.getPath(cartoMob.getRoom(iRoom), endRoom);
+                nextRoom = path.getVertexList().get(1);
+                shortPathText.setVisibility(View.VISIBLE);
+                shortPathText.setText(getString(R.string.short_path_next_room, nextRoom.getName()));
+            }
+        }
     }
 }
