@@ -154,12 +154,12 @@ public class WallActivity extends AppCompatActivity {
                 canvas.drawRect(rect, setPaint());
                 surfaceHolder.unlockCanvasAndPost(canvas);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                if (rect != null) {
+                if (true) {
                     CustomDialogRoomChooserForDoor.RoomListener roomListener = name -> {
                         Door tmp = new Door(rect, cartoMob.getRoom(iRoom));
                         tmp.setDst(cartoMob.getRoomFromName(name));
                         cartoMob.getRoom(iRoom).getWall(key).addDoor(tmp);
-                        showDoors();
+                        WallActivity.this.showDoors();
                     };
 
                     CustomDialogRoomChooserForDoor.RoomCreateListener roomCreateListener = () -> {
@@ -168,6 +168,9 @@ public class WallActivity extends AppCompatActivity {
                                 Toast.makeText(WallActivity.this, "Cette pièce existe déjà", Toast.LENGTH_SHORT).show();
                                 return;
                             }
+                            Door tmp = new Door(rect, cartoMob.getRoom(iRoom));
+                            tmp.setDst(cartoMob.getRoomFromName(name));
+                            cartoMob.getRoom(iRoom).getWall(key).addDoor(tmp);
                             cartoMob.addRoom(new Room(name, "room" + (cartoMob.getSize())));
                             cartoMob.getRoom(iRoom).getWall(key).getDoor(cartoMob.getRoom(iRoom).getWall(key).nbDoors() - 1).setDst(cartoMob.getRoomFromName(name));
                             Intent sendData = new Intent(WallActivity.this, RoomActivity.class);
@@ -175,7 +178,7 @@ public class WallActivity extends AppCompatActivity {
                             sendData.putExtra("iRoom", cartoMob.getSize() - 1);
                             newRoomLauncher.launch(sendData);
                         };
-                        final CustomDialogName roomName = new CustomDialogName(WallActivity.this, listenerRoomName, getText(R.string.custom_dialog_name_title_room).toString());
+                        final CustomDialogName roomName = new CustomDialogName(WallActivity.this, listenerRoomName, WallActivity.this.getText(R.string.custom_dialog_name_title_room).toString());
                         roomName.show();
                     };
 

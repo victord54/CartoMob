@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
 
 import java.io.Serializable;
 import java.util.ArrayList;
