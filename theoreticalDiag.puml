@@ -5,28 +5,74 @@ title Diagramme de classe pour DevMob
 package cartomob {
     package models {
         class CartoMob {
-            - String id
             - String name
             ..Constructor..
             + CartoMob(String name)
+            ..Getters..
+            + String getName()
+            + boolean isEmpty()
+            + int getSize()
+            + Room getRoom(int)
+            + ArrayList<Room> getRooms()
+            + int getIndiceFromRoom(String)
+            + Room getRoomFromName(String)
+            ..Setters..
+            + void setName(String)
+            + void addRoom(Room)
+            ..Others..
+            + Graph<Room,DefaultEdge> modelToGraph()
+            + String toString()
         }
 
         class Room {
             - String id
             - String name
+            - boolean isComplete
             ..Constructor..
             + Room(String name)
             ..Getters..
+            + boolean isComplete()
+            + String getName()
+            + Wall getWall(String)
+            + HashMap<String,Wall> getWalls()
+            + boolean isWallExist(String)
+            + int getNbWalls()
+            ..Setters..
+            + void setName(String)
+            + void addWall(String,Wall)
+            ..Others..
+            + Iterator<Wall> iterator()
+            + String toString()
         }
 
         class Wall {
+            - String orientation
+            - String nameOfPhoto
             ..Constructor..
             + Wall()
+            ..Getters..
+            + String getOrientation()
+            + String getNameOfPhoto()
+            + Door getDoor(int)
+            + int nbDoors()
+            + ArrayList<Door> getDoors()
+            ..Setters..
+            + void addDoor(Door)
+            ..Others..
+            + String toString()
+            + Iterator<Door> iterator()
         }
 
         class Door {
             ..Constructor..
             + Door()
+            ..Getters..
+            + Rect getRectangle()
+            + Room getDst()
+            ..Setters..
+            + void setDst(Room)
+            ..Others..
+            + String toString()
         }
     }
 }
@@ -34,6 +80,7 @@ package cartomob {
 CartoMob --"*" Room
 Room "1"--"4" Wall
 Wall --"*" Door
-Door --"*" Rect
+Door --"1" Rect
+Door --"2" Room
 
 @enduml
